@@ -1,0 +1,23 @@
+include_directories(../include)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-missing-prototypes")
+
+macro(fuzzer name)
+  add_executable(${name} ${name}.cc)
+  target_link_libraries(${name} crypto ${ARGN})
+  set_target_properties(${name} PROPERTIES LINK_FLAGS "-fsanitize=fuzzer")
+endmacro()
+
+fuzzer(bn_mod_exp)
+fuzzer(privkey)
+fuzzer(cert)
+fuzzer(spki)
+fuzzer(pkcs8)
+fuzzer(pkcs12)
+fuzzer(read_pem)
+fuzzer(server ssl)
+fuzzer(client ssl)
+fuzzer(dtls_server ssl)
+fuzzer(dtls_client ssl)
+fuzzer(ssl_ctx_api ssl)
+fuzzer(session ssl)
