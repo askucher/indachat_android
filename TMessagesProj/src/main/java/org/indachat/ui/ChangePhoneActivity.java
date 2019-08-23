@@ -715,12 +715,12 @@ public class ChangePhoneActivity extends BaseFragment {
                 if (checkPermissions) {
                     permissionsItems.clear();
                     if (!allowCall) {
-                        permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
+//                        permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
                     }
                     if (!allowSms) {
                         permissionsItems.add(Manifest.permission.RECEIVE_SMS);
                         if (Build.VERSION.SDK_INT >= 23) {
-                            permissionsItems.add(Manifest.permission.READ_SMS);
+//                            permissionsItems.add(Manifest.permission.READ_SMS);
                         }
                     }
                     if (!permissionsItems.isEmpty()) {

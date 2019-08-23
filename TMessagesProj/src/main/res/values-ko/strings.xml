@@ -1149,7 +1149,7 @@
     <string name="PassportProvidedInformation">제공한 정보</string>
     <string name="PassportInfoTitle">텔레그램 패스포트가 무엇인가요?</string>
     <string name="PassportInfo">텔레그램 패스포트와 함께라면 본인 확인이 필요한 웹사이트와 서비스에 손쉽게 가입하실 수 있습니다.\n\n회원님의 정보와 개인 데이터, 서류는 단대단 암호화로 보호됩니다. 텔레그램을 포함하여, 누구도 회원님의 승인 없이 이들에 접속할 수 없습니다.\n\nFAQ를 방문하여 더 많은 정보를 얻으실 수 있습니다.</string>
-    <string name="TelegramPassportCreatePasswordInfo">Please create a password to secure your personal data with end-to-end encryption.\n\nThis password will also be required whenever you log in to Telegram on a new device.</string>
+    <string name="TelegramPassportCreatePasswordInfo">Please create a password to secure your personal data with end-to-end encryption.\n\nThis password will also be required whenever you log in to Indachat on a new device.</string>
     <string name="TelegramPassportCreatePassword">비밀번호를 만드세요</string>
     <string name="TelegramPassportDelete">텔레그램 패스포트 삭제</string>
     <string name="TelegramPassportDeleteAlert">정말 텔레그램 패스포트를 삭제하시겠습니까?</string>
@@ -1793,12 +1793,12 @@
     <string name="AddBannedErrorAdmin">죄송합니다, 이 사용자는 그룹의 관리자이며 해제권한이 없으시기 떄문에 차단할 수 없습니다.</string>
     <string name="ErrorSendRestrictedStickers">죄송합니다. 이 그룹의 관리자가 회원님의 스티커 전송을 제한했습니다.</string>
     <string name="ErrorSendRestrictedMedia">죄송합니다. 이 그룹의 관리자가 회원님의 미디어 전송을 제한했습니다.</string>
-    <string name="TosDecline">We\'re very sorry, but this means you can\'t sign up for Telegram.\n\nUnlike others, we don\'t use your data for ad targeting or other commercial purposes. Telegram only stores the information it needs to function as a feature-rich cloud service. You can adjust how we use your data (e.g., delete synced contacts) in Privacy &amp; Security settings.\n\nBut if you\'re generally not OK with Telegram\'s modest needs, it won\'t be possible for us to provide this service.</string>
+    <string name="TosDecline">We\'re very sorry, but this means you can\'t sign up for Indachat.\n\nUnlike others, we don\'t use your data for ad targeting or other commercial purposes. Indachat only stores the information it needs to function as a feature-rich cloud service. You can adjust how we use your data (e.g., delete synced contacts) in Privacy &amp; Security settings.\n\nBut if you\'re generally not OK with Indachat\'s modest needs, it won\'t be possible for us to provide this service.</string>
     <string name="TosAgeTitle">나이 인증</string>
     <string name="PrivacyPolicyAndTerms">개인 정보 정책 및 이용 약관</string>
     <string name="TosAgeText">Tap Agree to confirm that you are %1$s or over.</string>
-    <string name="TosUpdateDecline">We\'re very sorry, but this means we must part ways here. Unlike others, we don\'t use your data for ad targeting or other commercial purposes. Telegram only stores the information it needs to function as a feature-rich cloud service. You can adjust how we use your data (e.g., delete synced contacts) in Privacy &amp; Security settings.\n\nBut if you\'re generally not OK with Telegram\'s modest needs, it won\'t be possible for us to provide this service. You can deactivate your account now — or look around some more and deactivate it later if you feel you\'re not happy with the way we use your data.</string>
-    <string name="TosDeclineDeleteAccount">Warning, this will irreversibly delete your Telegram account along with all the data you store in the Telegram cloud.\n\nImportant: You can Cancel now and export your data before deleting your account instead losing it all. (To do this, open the latest version of Telegram Desktop and go to Settings &gt; Export Telegram Data.)</string>
+    <string name="TosUpdateDecline">We\'re very sorry, but this means we must part ways here. Unlike others, we don\'t use your data for ad targeting or other commercial purposes. Indachat only stores the information it needs to function as a feature-rich cloud service. You can adjust how we use your data (e.g., delete synced contacts) in Privacy &amp; Security settings.\n\nBut if you\'re generally not OK with Indachat\'s modest needs, it won\'t be possible for us to provide this service. You can deactivate your account now — or look around some more and deactivate it later if you feel you\'re not happy with the way we use your data.</string>
+    <string name="TosDeclineDeleteAccount">Warning, this will irreversibly delete your Indachat account along with all the data you store in the Indachat cloud.\n\nImportant: You can Cancel now and export your data before deleting your account instead losing it all. (To do this, open the latest version of Indachat Desktop and go to Settings &gt; Export Indachat Data.)</string>
     <!--permissions-->
     <string name="PermissionContacts">회원님이 모든 기기에서 친구들과 연락할 수 있도록 하기 위해 텔레그램에게 회원님의 연락처에 접근할 권한이 필요합니다.</string>
     <string name="PermissionStorage">사진, 동영상, 음악과 그 밖의 미디어를 보내고 저장하려면 텔레그램에게 저장소 접근 권한을 부여하셔야 합니다.</string>

@@ -1082,18 +1082,18 @@ public class LoginActivity extends BaseFragment {
                 if (checkPermissions) {
                     permissionsItems.clear();
                     if (!allowCall) {
-                        permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
+//                        permissionsItems.add(Manifest.permission.READ_PHONE_STATE);
                     }
                     if (!allowSms) {
-                        permissionsItems.add(Manifest.permission.RECEIVE_SMS);
+//                        permissionsItems.add(Manifest.permission.RECEIVE_SMS);
                         if (Build.VERSION.SDK_INT >= 23) {
-                            permissionsItems.add(Manifest.permission.READ_SMS);
+//                            permissionsItems.add(Manifest.permission.READ_SMS);
                         }
                     }
                     if (!allowCancelCall) {
-                        permissionsItems.add(Manifest.permission.CALL_PHONE);
-                        permissionsItems.add(Manifest.permission.WRITE_CALL_LOG);
-                        permissionsItems.add(Manifest.permission.READ_CALL_LOG);
+//                        permissionsItems.add(Manifest.permission.CALL_PHONE);
+//                        permissionsItems.add(Manifest.permission.WRITE_CALL_LOG);
+//                        permissionsItems.add(Manifest.permission.READ_CALL_LOG);
                     }
                     boolean ok = true;
                     if (!permissionsItems.isEmpty()) {
@@ -1243,12 +1243,12 @@ public class LoginActivity extends BaseFragment {
                         if (checkShowPermissions && !allowCall && !allowSms) {
                             permissionsShowItems.clear();
                             if (!allowCall) {
-                                permissionsShowItems.add(Manifest.permission.READ_PHONE_STATE);
+//                                permissionsShowItems.add(Manifest.permission.READ_PHONE_STATE);
                             }
                             if (!allowSms) {
-                                permissionsShowItems.add(Manifest.permission.RECEIVE_SMS);
+//                                permissionsShowItems.add(Manifest.permission.RECEIVE_SMS);
                                 if (Build.VERSION.SDK_INT >= 23) {
-                                    permissionsShowItems.add(Manifest.permission.READ_SMS);
+//                                    permissionsShowItems.add(Manifest.permission.READ_SMS);
                                 }
                             }
                             if (!permissionsShowItems.isEmpty()) {
