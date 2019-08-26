@@ -115,6 +115,7 @@
     <string name="Settings">설정</string>
     <string name="Contacts">연락처</string>
     <string name="NewGroup">그룹 만들기</string>
+    <string name="Wallet">지갑</string>
     <string name="Yesterday">어제</string>
     <string name="NoResult">결과 없음</string>
     <string name="NoChats">대화방이 없습니다...</string>

@@ -437,6 +437,10 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                     args.putInt("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
                     presentFragment(new ChatActivity(args));
                     drawerLayoutContainer.closeDrawer(false);
+                } else if (id == 12) {
+                    //WALLET
+                    presentFragment(new WalletActivity(null));
+                    drawerLayoutContainer.closeDrawer(false);
                 }
             }
         });
