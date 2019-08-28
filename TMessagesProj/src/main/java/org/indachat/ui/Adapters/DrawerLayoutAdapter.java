@@ -145,7 +145,12 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
                     position -= getAccountRowsCount();
                 }
                 DrawerActionCell drawerActionCell = (DrawerActionCell) holder.itemView;
-                items.get(position).bind(drawerActionCell);
+                Item item = items.get(position);
+                if (item == null) {
+                    //java.lang.NullPointerException: Attempt to invoke virtual method 'void org.indachat.ui.Adapters.DrawerLayoutAdapter$Item.bind(org.indachat.ui.Cells.DrawerActionCell)' on a null object reference
+                    break;
+                }
+                item.bind(drawerActionCell);
                 drawerActionCell.setPadding(0, 0, 0, 0);
                 break;
             }
