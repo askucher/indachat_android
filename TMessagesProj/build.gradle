@@ -13,6 +13,7 @@ configurations {
 dependencies {
     compileOnly 'org.checkerframework:checker-qual:2.5.0'
     compileOnly 'org.checkerframework:checker-compat-qual:2.5.0'
+    compileOnly 'com.google.code.gson:gson:2.3.1'
     implementation 'com.android.support:support-core-ui:28.0.0-rc01'
     implementation 'com.android.support:support-compat:28.0.0-rc01'
     implementation 'com.android.support:support-core-utils:28.0.0-rc01'
@@ -22,6 +23,7 @@ dependencies {
     implementation 'com.googlecode.mp4parser:isoparser:1.0.6'
     implementation 'com.stripe:stripe-android:2.0.2'
     implementation 'org.osmdroid:osmdroid-android:6.0.2'
+
 }
 
 //return an api key from a properties file.
