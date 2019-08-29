@@ -3,7 +3,7 @@
  * It is licensed under GNU GPL v. 2 or later.
  * You should have received a copy of the license in this archive (see LICENSE).
  *
- * Copyright Nikolai Kudashov, 2013-2017.
+ * Copyright Web3 Space, 2019.
  */
 
 package org.indachat.ui;
@@ -75,7 +75,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
-        actionBar.setTitle(LocaleController.getString("Wallet", R.string.Contacts));
+        actionBar.setTitle(LocaleController.getString("Wallet", R.string.Wallet));
 
 
 
@@ -87,15 +87,17 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
                 } else if (id == 1) {
                     //refresh
                     //presentFragment(new NewContactActivity());
+                    refreshPressed();
                 } else if (id == 2) {
                     //lock
+                    lockPressed();
                 }
             }
         });
 
         ActionBarMenu menu = actionBar.createMenu();
-        menu.addItem(1, R.drawable.lock_round);
-        menu.addItem(2, R.drawable.lock_round);
+        menu.addItem(1, R.drawable.update);
+        menu.addItem(2, R.drawable.ic_lock_white);
 
 
         fragmentView = new FrameLayout(context) {
@@ -122,26 +124,25 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
     public void refreshPressed() {
 
-        Request request = new Request();
-        request.method = "refresh";
-        request.args = new String[]{};
-        webView.callHandler("walletRPC", new Gson().toJson(request), new CallBackFunction() {
-            @Override
-            public void onCallBack(String data) {
 
-            }
-        });
+            Request request = new Request();
+            request.method = "refresh";
+            request.args = new String[]{};
+            webView.callHandler("walletRPC", new Gson().toJson(request), (CallBackFunction) data -> {
+
+            });
+        //}
+        //catch(Exception err) {
+        //    new AlertDialog.Builder(context).setTitle("Delete entry").setMessage("Are you sure you want to delete this entry?").show();
+        //}
     }
 
     public void lockPressed() {
         Request request = new Request();
         request.method = "lock";
         request.args = new String[]{};
-        webView.callHandler("walletRPC", new Gson().toJson(request), new CallBackFunction() {
-            @Override
-            public void onCallBack(String data) {
+        webView.callHandler("walletRPC", new Gson().toJson(request), (CallBackFunction) data -> {
 
-            }
         });
     }
 
@@ -228,10 +229,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
     @Override
     public ThemeDescription[] getThemeDescriptions() {
-        ThemeDescription.ThemeDescriptionDelegate cellDelegate = new ThemeDescription.ThemeDescriptionDelegate() {
-            @Override
-            public void didSetColor() {
-            }
+        ThemeDescription.ThemeDescriptionDelegate cellDelegate = () -> {
         };
 
         return new ThemeDescription[]{
