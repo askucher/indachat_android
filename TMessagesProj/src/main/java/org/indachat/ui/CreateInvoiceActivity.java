@@ -25,6 +25,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.indachat.jsbridge.CallBackFunction;
@@ -50,8 +52,7 @@ import org.indachat.ui.Components.LayoutHelper;
 public class CreateInvoiceActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
     private EditTextBoldCursor amountField;
-    private EditTextBoldCursor currencyField;
-
+    private Spinner currencyChoose;
 
     private int user_id;
 
@@ -111,6 +112,7 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
                 //Process TX
 
+
             });
 
 
@@ -137,7 +139,7 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
                 } else if (id == done_button) {
 
                     String amount = amountField.getText().toString();
-                    String token = amountField.getText().toString();
+                    String token = currencyChoose.getSelectedItem().toString();
 
                     wallet.getAddress(token, (address)->{
 
@@ -195,15 +197,15 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
             linearLayout.addView(amountField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 24, 24, 0));
             amountField.setOnEditorActionListener((textView, i, keyEvent) -> {
                 if (i == EditorInfo.IME_ACTION_NEXT) {
-                    currencyField.requestFocus();
-                    currencyField.setSelection(currencyField.length());
+                    //currencyField.requestFocus();
+                    //currencyField.setSelection(currencyField.length());
                     return true;
                 }
                 return false;
             });
 
 
-
+            /*
             currencyField = new EditTextBoldCursor(context);
             currencyField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             currencyField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
@@ -227,6 +229,26 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
                 }
                 return false;
             });
+
+             */
+
+            currencyChoose = new Spinner(context);
+            linearLayout.addView(currencyChoose, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 17, 16, 17, 0));
+
+
+            wallet.getSupportedTokens((items)-> {
+
+                String[] paths = {"BTC", "ETH"};
+
+                ArrayAdapter<String>adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, paths);
+
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                currencyChoose.setAdapter(adapter);
+                //currencyChoose.setOnItemSelectedListener(context);
+
+
+            });
+
 
 
 
@@ -272,10 +294,10 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
                 new ThemeDescription(amountField, ThemeDescription.FLAG_HINTTEXTCOLOR, null, null, null, null, Theme.key_windowBackgroundWhiteHintText),
                 new ThemeDescription(amountField, ThemeDescription.FLAG_BACKGROUNDFILTER, null, null, null, null, Theme.key_windowBackgroundWhiteInputField),
                 new ThemeDescription(amountField, ThemeDescription.FLAG_BACKGROUNDFILTER | ThemeDescription.FLAG_DRAWABLESELECTEDSTATE, null, null, null, null, Theme.key_windowBackgroundWhiteInputFieldActivated),
-                new ThemeDescription(currencyField, ThemeDescription.FLAG_TEXTCOLOR, null, null, null, null, Theme.key_windowBackgroundWhiteBlackText),
-                new ThemeDescription(currencyField, ThemeDescription.FLAG_HINTTEXTCOLOR, null, null, null, null, Theme.key_windowBackgroundWhiteHintText),
-                new ThemeDescription(currencyField, ThemeDescription.FLAG_BACKGROUNDFILTER, null, null, null, null, Theme.key_windowBackgroundWhiteInputField),
-                new ThemeDescription(currencyField, ThemeDescription.FLAG_BACKGROUNDFILTER | ThemeDescription.FLAG_DRAWABLESELECTEDSTATE, null, null, null, null, Theme.key_windowBackgroundWhiteInputFieldActivated),
+                new ThemeDescription(currencyChoose, ThemeDescription.FLAG_TEXTCOLOR, null, null, null, null, Theme.key_windowBackgroundWhiteBlackText),
+                new ThemeDescription(currencyChoose, ThemeDescription.FLAG_HINTTEXTCOLOR, null, null, null, null, Theme.key_windowBackgroundWhiteHintText),
+                new ThemeDescription(currencyChoose, ThemeDescription.FLAG_BACKGROUNDFILTER, null, null, null, null, Theme.key_windowBackgroundWhiteInputField),
+                new ThemeDescription(currencyChoose, ThemeDescription.FLAG_BACKGROUNDFILTER | ThemeDescription.FLAG_DRAWABLESELECTEDSTATE, null, null, null, null, Theme.key_windowBackgroundWhiteInputFieldActivated),
 
 
         };
