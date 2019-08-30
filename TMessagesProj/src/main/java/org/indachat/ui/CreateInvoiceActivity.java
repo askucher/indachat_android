@@ -25,6 +25,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.indachat.jsbridge.CallBackFunction;
@@ -51,7 +53,7 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
     private EditTextBoldCursor amountField;
     private EditTextBoldCursor currencyField;
-
+    private Spinner currencyChoose;
 
     private int user_id;
 
@@ -203,7 +205,7 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
             });
 
 
-
+            /*
             currencyField = new EditTextBoldCursor(context);
             currencyField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             currencyField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
@@ -228,6 +230,18 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
                 return false;
             });
 
+             */
+
+            String[] paths = {"BTC", "ETH"};
+
+            currencyChoose = new Spinner(context);
+
+            ArrayAdapter<String>adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, paths);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            currencyChoose.setAdapter(adapter);
+            //currencyChoose.setOnItemSelectedListener(context);
+            linearLayout.addView(currencyChoose, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 16, 24, 0));
 
 
         });
