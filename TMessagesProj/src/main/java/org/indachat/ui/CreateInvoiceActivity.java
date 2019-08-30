@@ -241,7 +241,7 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             currencyChoose.setAdapter(adapter);
             //currencyChoose.setOnItemSelectedListener(context);
-            linearLayout.addView(currencyChoose, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 16, 24, 0));
+            linearLayout.addView(currencyChoose, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 20, 16, 20, 0));
 
 
         });
