@@ -93,7 +93,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         });
 
         ActionBarMenu menu = actionBar.createMenu();
-        menu.addItem(1, R.drawable.ic_again);
+        menu.addItem(1, R.drawable.ic_refresh);
         menu.addItem(2, R.drawable.ic_lock_white);
 
 
