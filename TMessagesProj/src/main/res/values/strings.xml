@@ -181,6 +181,8 @@
     <string name="ContactsPermissionAlertNotNow">NOT NOW</string>
     <string name="ContactsPermissionAlertContinue">CONTINUE</string>
     <string name="YourContacts">Your contacts on Indachat</string>
+    <string name="InvoiceText">Invoice to pay %1$s %2$s to address %3$s</string>
+    <string name="InvoicePayedText">Invoice %1$s %2$s to address %3$s payed with txId %4$s</string>
     <!--channels-->
     <string name="SetAsAdmin">Promote to admin</string>
     <string name="NoBlockedUsers">No banned users</string>

@@ -49,6 +49,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MessageObject {
 
@@ -56,6 +58,7 @@ public class MessageObject {
     public static final int MESSAGE_SEND_STATE_SENDING = 1;
     public static final int MESSAGE_SEND_STATE_SEND_ERROR = 2;
     public static final int MESSAGE_SEND_STATE_EDITING = 3;
+    Pattern invoicePattern = Pattern.compile("^(\\d+(?:\\.\\d+)?|\\.\\d+)\\/([a-z_]+)/([0-9a-zA-Z]+)(?:/([0-9a-zA-Z]+))?$");
 
     public int localType;
     public String localName;
@@ -1115,7 +1118,7 @@ public class MessageObject {
         if (messageText == null) {
             messageText = "";
         }
-
+        messageText = this.replaceInvoiceMessage(messageText);
         setType();
         measureInlineBotButtons();
 
@@ -1168,6 +1171,22 @@ public class MessageObject {
         layoutCreated = generateLayout;
         generateThumbs(false);
         checkMediaExistance();
+    }
+
+    private CharSequence replaceInvoiceMessage(CharSequence messageText) {
+        Matcher matcher = invoicePattern.matcher(messageText);
+        boolean matchFound = matcher.find();
+        if (!matchFound) {
+            return messageText;
+        }
+        String amountStr = matcher.group(1);
+        String currencyStr = matcher.group(2);
+        String addressStr = matcher.group(3);
+        String txIdStr = matcher.group(4);
+        if (txIdStr == null) {
+            return LocaleController.formatString("InvoiceText", R.string.InvoiceText, amountStr, currencyStr, addressStr);
+        }
+        return LocaleController.formatString("InvoicePayedText", R.string.InvoicePayedText, amountStr, currencyStr, addressStr, txIdStr);
     }
 
     private void createDateArray(int accountNum, TLRPC.TL_channelAdminLogEvent event, ArrayList<MessageObject> messageObjects, HashMap<String, ArrayList<MessageObject>> messagesByDays) {
