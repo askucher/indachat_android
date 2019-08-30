@@ -85,6 +85,39 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
         progressDialog.show();
     }
 
+    public void receiveInvoiceMock(String invoice, Context context) {
+
+        String[] invoiceParts = invoice.split("/");
+
+        String amount  = invoiceParts[0];
+        String token   = invoiceParts[1];
+        String address = invoiceParts[2];
+
+        WalletActivity wallet = WalletActivity.instance;
+
+        if (wallet == null) {
+            walletIsNotReady(context);
+            return;
+        }
+
+        wallet.getAddress("btc", (x)-> {
+
+            if (x.getClass() != String.class) {
+                walletIsNotReady(context);
+                return;
+            }
+
+            wallet.sendTransaction(token, address, amount, (tx)-> {
+
+                //Process TX
+
+            });
+
+
+        });
+
+    }
+
     @Override
     public View createView(Context context) {
 
@@ -103,8 +136,8 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
                     finishFragment();
                 } else if (id == done_button) {
 
-                    Editable amount = amountField.getText();
-                    Editable token = amountField.getText();
+                    String amount = amountField.getText().toString();
+                    String token = amountField.getText().toString();
 
                     wallet.getAddress(token, (address)->{
 
@@ -129,72 +162,75 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
         }
 
 
-        //wallet.getAddress("btc", (x)-> {
-        //
-        //});
+        wallet.getAddress("btc", (x)-> {
 
-
-
-
-        LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        ((ScrollView) fragmentView).addView(linearLayout, LayoutHelper.createScroll(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT));
-        linearLayout.setOnTouchListener((v, event) -> true);
-
-        FrameLayout frameLayout = new FrameLayout(context);
-        linearLayout.addView(frameLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 24, 24, 24, 0));
-
-        amountField = new EditTextBoldCursor(context);
-        amountField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
-        amountField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
-        amountField.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-        amountField.setBackgroundDrawable(Theme.createEditTextDrawable(context, false));
-        amountField.setMaxLines(1);
-        amountField.setLines(1);
-        amountField.setSingleLine(true);
-        amountField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
-        amountField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
-        amountField.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        amountField.setHint(LocaleController.getString("Amount", R.string.Amount));
-        amountField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-        amountField.setCursorSize(AndroidUtilities.dp(20));
-        amountField.setCursorWidth(1.5f);
-        linearLayout.addView(amountField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 24, 24, 0));
-        amountField.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == EditorInfo.IME_ACTION_NEXT) {
-                currencyField.requestFocus();
-                currencyField.setSelection(currencyField.length());
-                return true;
+            if (x.getClass() != String.class) {
+                walletIsNotReady(context);
+                return;
             }
-            return false;
+
+            LinearLayout linearLayout = new LinearLayout(context);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            ((ScrollView) fragmentView).addView(linearLayout, LayoutHelper.createScroll(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT));
+            linearLayout.setOnTouchListener((v, event) -> true);
+
+            FrameLayout frameLayout = new FrameLayout(context);
+            linearLayout.addView(frameLayout, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, 24, 24, 24, 0));
+
+            amountField = new EditTextBoldCursor(context);
+            amountField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            amountField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+            amountField.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+            amountField.setBackgroundDrawable(Theme.createEditTextDrawable(context, false));
+            amountField.setMaxLines(1);
+            amountField.setLines(1);
+            amountField.setSingleLine(true);
+            amountField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
+            amountField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+            amountField.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+            amountField.setHint(LocaleController.getString("Amount", R.string.Amount));
+            amountField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+            amountField.setCursorSize(AndroidUtilities.dp(20));
+            amountField.setCursorWidth(1.5f);
+            linearLayout.addView(amountField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 24, 24, 0));
+            amountField.setOnEditorActionListener((textView, i, keyEvent) -> {
+                if (i == EditorInfo.IME_ACTION_NEXT) {
+                    currencyField.requestFocus();
+                    currencyField.setSelection(currencyField.length());
+                    return true;
+                }
+                return false;
+            });
+
+
+
+            currencyField = new EditTextBoldCursor(context);
+            currencyField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            currencyField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
+            currencyField.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+            currencyField.setBackgroundDrawable(Theme.createEditTextDrawable(context, false));
+            currencyField.setMaxLines(1);
+            currencyField.setLines(1);
+            currencyField.setSingleLine(true);
+            currencyField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
+            currencyField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+            currencyField.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            currencyField.setHint(LocaleController.getString("Currency", R.string.Currency));
+            currencyField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+            currencyField.setCursorSize(AndroidUtilities.dp(20));
+            currencyField.setCursorWidth(1.5f);
+            linearLayout.addView(currencyField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 16, 24, 0));
+            currencyField.setOnEditorActionListener((textView, i, keyEvent) -> {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    //doneButton.performClick();
+                    return true;
+                }
+                return false;
+            });
+
+
+
         });
-
-
-
-        currencyField = new EditTextBoldCursor(context);
-        currencyField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
-        currencyField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
-        currencyField.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-        currencyField.setBackgroundDrawable(Theme.createEditTextDrawable(context, false));
-        currencyField.setMaxLines(1);
-        currencyField.setLines(1);
-        currencyField.setSingleLine(true);
-        currencyField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
-        currencyField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
-        currencyField.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        currencyField.setHint(LocaleController.getString("Currency", R.string.Currency));
-        currencyField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-        currencyField.setCursorSize(AndroidUtilities.dp(20));
-        currencyField.setCursorWidth(1.5f);
-        linearLayout.addView(currencyField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 16, 24, 0));
-        currencyField.setOnEditorActionListener((textView, i, keyEvent) -> {
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                //doneButton.performClick();
-                return true;
-            }
-            return false;
-        });
-
 
 
         return fragmentView;
