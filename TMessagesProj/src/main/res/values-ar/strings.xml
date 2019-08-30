@@ -115,7 +115,6 @@
     <string name="Settings">الإعدادات</string>
     <string name="Contacts">جهات الاتصال</string>
     <string name="NewGroup">مجموعة جديدة</string>
-    <string name="Wallet">محفظة نقود</string>
     <string name="Yesterday">يوم أمس</string>
     <string name="NoResult">لا توجد نتائج</string>
     <string name="NoChats">لا توجد محادثات بعد...</string>
@@ -2183,4 +2182,6 @@
     <string name="formatDateAtTime">%1$s الساعة %2$s</string>
     <string name="Invoice">"السلع المرسلة "</string>
     <string name="Wallet">محفظة نقود</string>
+    <string name="Amount">Amount</string>
+    <string name="Currency">Currency</string>
 </resources>

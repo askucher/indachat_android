@@ -2182,4 +2182,6 @@
     <string name="formatDateAtTime">%1$s alle %2$s</string>
     <string name="Invoice">Fattura</string>
     <string name="Wallet">Portafoglio</string>
+    <string name="Amount">Amount</string>
+    <string name="Currency">Currency</string>
 </resources>

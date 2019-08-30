@@ -558,7 +558,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private final static int attach_document = 4;
     private final static int attach_contact = 5;
     private final static int attach_location = 6;
-    private final static int attach_invoice = 7;
+    private final static int attach_invoice = 3; //replace audio
 
     private final static int text_bold = 50;
     private final static int text_italic = 51;
@@ -4936,12 +4936,14 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             presentFragment(fragment);
         } else if (which == attach_invoice) {
             CreateInvoiceActivity fragment = new CreateInvoiceActivity();
+            /*
             fragment.setDelegate(audios -> {
                 fillEditingMediaWithCaption(null, null);
                 //SendMessagesHelper.prepareSendingAudioDocuments(audios, dialog_id, replyingMessageObject, editingMessageObject);
                 hideFieldPanel();
                 DataQuery.getInstance(currentAccount).cleanDraft(dialog_id, true);
             });
+             */
             presentFragment(fragment);
         } else if (which == attach_audio) {
             if (Build.VERSION.SDK_INT >= 23 && getParentActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -12930,7 +12932,10 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                 new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[2]}, null, Theme.key_chat_attachVideoIcon),
                 new ThemeDescription(null, ThemeDescription.FLAG_BACKGROUNDFILTER, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[3]}, null, Theme.key_chat_attachAudioBackground),
                 //new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[3]}, null, Theme.key_chat_attachAudioBackgroundPressed),
-                new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[3]}, null, Theme.key_chat_attachAudioIcon),
+
+                //new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[3]}, null, Theme.key_chat_attachAudioIcon), //replace audio with invoice
+                new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[3]}, null, Theme.key_chat_attachInvoiceIcon),
+
                 new ThemeDescription(null, ThemeDescription.FLAG_BACKGROUNDFILTER, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[4]}, null, Theme.key_chat_attachFileBackground),
                 //new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[4]}, null, Theme.key_chat_attachFileBackgroundPressed),
                 new ThemeDescription(null, 0, null, null, new Drawable[]{Theme.chat_attachButtonDrawables[4]}, null, Theme.key_chat_attachFileIcon),

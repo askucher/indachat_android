@@ -115,7 +115,6 @@
     <string name="Settings">Configurações</string>
     <string name="Contacts">Contatos</string>
     <string name="NewGroup">Novo Grupo</string>
-    <string name="Wallet">Carteira</string>
     <string name="Yesterday">ontem</string>
     <string name="NoResult">Nenhum resultado</string>
     <string name="NoChats">Ainda não há chats...</string>
@@ -2183,4 +2182,6 @@
     <string name="formatDateAtTime">%1$s às %2$s</string>
     <string name="Invoice">Fatura</string>
     <string name="Wallet">Carteira</string>
+    <string name="Amount">Amount</string>
+    <string name="Currency">Currency</string>
 </resources>

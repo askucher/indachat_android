@@ -434,9 +434,11 @@ public class Theme {
     public static Drawable chat_msgErrorDrawable;
     public static Drawable chat_muteIconDrawable;
     public static Drawable chat_lockIconDrawable;
+
     public static Drawable chat_inlineResultFile;
     public static Drawable chat_inlineResultAudio;
     public static Drawable chat_inlineResultLocation;
+    public static Drawable chat_inlineResultInvoice;
     public static Drawable chat_redLocationIcon;
     public static Drawable chat_msgOutBroadcastDrawable;
     public static Drawable chat_msgMediaBroadcastDrawable;
@@ -719,6 +721,7 @@ public class Theme {
     public static final String key_chat_attachAudioBackground = "chat_attachAudioBackground";
     //public static final String key_chat_attachAudioBackgroundPressed = "chat_attachAudioBackgroundPressed";
     public static final String key_chat_attachAudioIcon = "chat_attachAudioIcon";
+    public static final String key_chat_attachInvoiceIcon = "chat_attachInvoiceIcon";
     public static final String key_chat_attachFileBackground = "chat_attachFileBackground";
     //public static final String key_chat_attachFileBackgroundPressed = "chat_attachFileBackgroundPressed";
     public static final String key_chat_attachFileIcon = "chat_attachFileIcon";
@@ -1318,6 +1321,7 @@ public class Theme {
         defaultColors.put(key_chat_attachAudioBackground, 0xfff68751);
         //defaultColors.put(key_chat_attachAudioBackgroundPressed, 0xfff68751);
         defaultColors.put(key_chat_attachAudioIcon, 0xffffffff);
+        defaultColors.put(key_chat_attachInvoiceIcon, 0xffffffff);
         defaultColors.put(key_chat_attachFileBackground, 0xff34a0f4);
         //defaultColors.put(key_chat_attachFileBackgroundPressed, 0xff34a0f4);
         defaultColors.put(key_chat_attachFileIcon, 0xffffffff);
@@ -2984,6 +2988,7 @@ public class Theme {
             chat_inlineResultFile = resources.getDrawable(R.drawable.bot_file);
             chat_inlineResultAudio = resources.getDrawable(R.drawable.bot_music);
             chat_inlineResultLocation = resources.getDrawable(R.drawable.bot_location);
+            chat_inlineResultInvoice = resources.getDrawable(R.drawable.bot_invoice);
             chat_redLocationIcon = resources.getDrawable(R.drawable.map_pin).mutate();
 
             chat_msgInShadowDrawable = resources.getDrawable(R.drawable.msg_in_shadow);
@@ -3233,6 +3238,7 @@ public class Theme {
             setDrawableColorByKey(chat_msgBroadcastMediaDrawable, key_chat_mediaBroadcast);
             setDrawableColorByKey(chat_inlineResultFile, key_chat_inlineResultIcon);
             setDrawableColorByKey(chat_inlineResultAudio, key_chat_inlineResultIcon);
+            setDrawableColorByKey(chat_inlineResultInvoice, key_chat_inlineResultIcon);
             setDrawableColorByKey(chat_inlineResultLocation, key_chat_inlineResultIcon);
             setDrawableColorByKey(chat_msgInCallDrawable, key_chat_inInstant);
             setDrawableColorByKey(chat_msgInCallSelectedDrawable, key_chat_inInstantSelected);
@@ -3329,6 +3335,7 @@ public class Theme {
             setCombinedDrawableColor(chat_attachButtonDrawables[2], getColor(key_chat_attachVideoIcon), true);
             setCombinedDrawableColor(chat_attachButtonDrawables[3], getColor(key_chat_attachAudioBackground), false);
             setCombinedDrawableColor(chat_attachButtonDrawables[3], getColor(key_chat_attachAudioIcon), true);
+            setCombinedDrawableColor(chat_attachButtonDrawables[3], getColor(key_chat_attachInvoiceIcon), true);
             setCombinedDrawableColor(chat_attachButtonDrawables[4], getColor(key_chat_attachFileBackground), false);
             setCombinedDrawableColor(chat_attachButtonDrawables[4], getColor(key_chat_attachFileIcon), true);
             setCombinedDrawableColor(chat_attachButtonDrawables[5], getColor(key_chat_attachContactBackground), false);
