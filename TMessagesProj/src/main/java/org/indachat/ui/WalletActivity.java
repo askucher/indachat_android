@@ -23,7 +23,6 @@ import org.indachat.ui.ActionBar.ActionBarMenu;
 import org.indachat.ui.ActionBar.BaseFragment;
 import org.indachat.ui.ActionBar.Theme;
 import org.indachat.ui.ActionBar.ThemeDescription;
-import org.indachat.ui.Components.EmptyTextProgressView;
 import org.indachat.ui.Components.LayoutHelper;
 
 import android.webkit.WebChromeClient;
@@ -32,24 +31,22 @@ import org.indachat.jsbridge.BridgeHandler;
 import org.indachat.jsbridge.BridgeWebView;
 import org.indachat.jsbridge.CallBackFunction;
 import org.indachat.jsbridge.DefaultHandler;
-import com.google.gson.Gson;
 
 
 
 public class WalletActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
-    private EmptyTextProgressView emptyView;
 
     private BridgeWebView webView;
 
-    static class Request {
-        String token;
-        String method;
-        String[] args;
-    }
-
-    public WalletActivity(Bundle args) {
+    public WalletActivity(Bundle args, Context context) {
         super(args);
+
+        webView = new BridgeWebView(context);
+
+        webView.setDefaultHandler(new DefaultHandler());
+        webView.setWebChromeClient(new WebChromeClient() {});
+        webView.loadUrl("file:///android_asset/wallet.html");
 
 
     }
@@ -109,11 +106,6 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         };
         FrameLayout frameLayout = (FrameLayout) fragmentView;
 
-        webView = new BridgeWebView(context);
-        webView.setDefaultHandler(new DefaultHandler());
-        webView.setWebChromeClient(new WebChromeClient() {});
-        webView.loadUrl("file:///android_asset/wallet.html");
-
         frameLayout.addView(webView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
 
@@ -123,78 +115,43 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
 
     public void refreshPressed() {
-
-
-            Request request = new Request();
-            request.method = "refresh";
-            request.args = new String[]{};
-            webView.callHandler("walletRPC", new Gson().toJson(request), (CallBackFunction) data -> {
+            webView.callHandler("walletRPC", "{ method: \"refresh\", args: [] }", data -> {
 
             });
-        //}
-        //catch(Exception err) {
-        //    new AlertDialog.Builder(context).setTitle("Delete entry").setMessage("Are you sure you want to delete this entry?").show();
-        //}
     }
 
     public void lockPressed() {
-        Request request = new Request();
-        request.method = "lock";
-        request.args = new String[]{};
-        webView.callHandler("walletRPC", new Gson().toJson(request), (CallBackFunction) data -> {
+        webView.callHandler("walletRPC", "{ method: \"lock\", args: [] }", data -> {
 
         });
     }
 
     public void chooseNetwork(String net, CallBackFunction callback) {
-        Request request = new Request();
-        request.method = "use";
-        request.args = new String[]{net};
-        webView.callHandler("walletRPC", new Gson().toJson(request), callback);
+        webView.callHandler("walletRPC", "{ method: \"use\", args: [\"" + net + "\"] }", callback);
     }
 
 
 
     public void setTheme(String theme, CallBackFunction callback) {
-        Request request = new Request();
-        request.method = "setTheme";
-        request.args = new String[]{theme};
-        webView.callHandler("walletRPC", new Gson().toJson(request), callback);
+        webView.callHandler("walletRPC", "{ method: \"setTheme\", args: [\"" + theme + "\"] }", callback);
     }
 
 
     public void getBalance(String token, CallBackFunction callback) {
-        Request request = new Request();
-        request.token = token;
-        request.method = "getBalance";
-        request.args = new String[]{};
-        webView.callHandler("walletRPC", new Gson().toJson(request), callback);
+        webView.callHandler("walletRPC", "{ method: \"getBalance\", token:\"" + token + "\" , args: [] }", callback);
     }
 
     public void getAddress(String token, CallBackFunction callback) {
-        Request request = new Request();
-        request.token = token;
-        request.method = "getAddress";
-        request.args = new String[]{};
-        webView.callHandler("walletRPC", new Gson().toJson(request), callback);
+        webView.callHandler("walletRPC", "{ method: \"getAddress\", token:\"" + token + "\" , args: [] }", callback);
     }
 
 
     public void getSupportedTokens(CallBackFunction callback) {
-        Request request = new Request();
-        request.method = "getSupportedTokens";
-        request.args = new String[]{};
-        webView.callHandler("walletRPC", new Gson().toJson(request), callback);
+        webView.callHandler("walletRPC", "{ method: \"getSupportedTokens\", args: [] }", callback);
     }
 
     public void sendTransaction(String token, String to, String amount, CallBackFunction callback) {
-
-        Request request = new Request();
-        request.token = token;
-        request.method = "sendTransaction";
-        request.args = new String[]{to, amount};
-        webView.callHandler("walletRPC", new Gson().toJson(request), callback);
-
+        webView.callHandler("walletRPC", "{ method: \"sendTransaction\", token:\"" + token + "\" , args: [\"" + to + "\",\"" + amount + "\"] }", callback);
     }
 
 
@@ -243,7 +200,6 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
                 new ThemeDescription(actionBar, ThemeDescription.FLAG_AB_SEARCHPLACEHOLDER, null, null, null, null, Theme.key_actionBarDefaultSearchPlaceholder),
 
 
-                new ThemeDescription(emptyView, ThemeDescription.FLAG_TEXTCOLOR, null, null, null, null, Theme.key_emptyListPlaceholder),
 
                 new ThemeDescription(null, 0, null, null, null, cellDelegate, Theme.key_avatar_backgroundRed),
                 new ThemeDescription(null, 0, null, null, null, cellDelegate, Theme.key_avatar_backgroundOrange),

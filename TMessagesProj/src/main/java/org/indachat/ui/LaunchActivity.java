@@ -154,8 +154,13 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
 
     private Runnable lockRunnable;
 
+    private WalletActivity wallet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        wallet = new WalletActivity(null, getApplicationContext());
+
         ApplicationLoader.postInitApplication();
         AndroidUtilities.checkDisplaySize(this, getResources().getConfiguration());
         currentAccount = UserConfig.selectedAccount;
@@ -439,7 +444,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 12) {
                     //WALLET
-                    presentFragment(new WalletActivity(null));
+                    presentFragment(wallet);
                     drawerLayoutContainer.closeDrawer(false);
                 }
             }
