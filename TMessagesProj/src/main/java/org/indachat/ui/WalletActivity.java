@@ -11,6 +11,7 @@ package org.indachat.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 
 import android.widget.FrameLayout;
@@ -39,6 +40,8 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
     private BridgeWebView webView;
 
+    public static WalletActivity instance;
+
     public WalletActivity(Bundle args, Context context) {
         super(args);
 
@@ -48,6 +51,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         webView.setWebChromeClient(new WebChromeClient() {});
         webView.loadUrl("file:///android_asset/wallet.html");
 
+        instance = this;
 
     }
 
@@ -141,7 +145,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         webView.callHandler("walletRPC", "{ method: \"getBalance\", token:\"" + token + "\" , args: [] }", callback);
     }
 
-    public void getAddress(String token, CallBackFunction callback) {
+    public void getAddress(Editable token, CallBackFunction callback) {
         webView.callHandler("walletRPC", "{ method: \"getAddress\", token:\"" + token + "\" , args: [] }", callback);
     }
 

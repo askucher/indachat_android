@@ -154,7 +154,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
 
     private Runnable lockRunnable;
 
-    private WalletActivity wallet;
+    public WalletActivity wallet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

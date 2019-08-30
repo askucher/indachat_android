@@ -9,9 +9,11 @@
 package org.indachat.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -25,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.indachat.jsbridge.CallBackFunction;
 import org.indachat.messenger.AndroidUtilities;
 import org.indachat.PhoneFormat.PhoneFormat;
 import org.indachat.messenger.ContactsController;
@@ -35,6 +38,7 @@ import org.indachat.messenger.NotificationCenter;
 import org.indachat.messenger.R;
 import org.indachat.ui.ActionBar.ActionBar;
 import org.indachat.ui.ActionBar.ActionBarMenu;
+import org.indachat.ui.ActionBar.AlertDialog;
 import org.indachat.ui.ActionBar.Theme;
 import org.indachat.ui.ActionBar.ThemeDescription;
 import org.indachat.ui.Components.AvatarDrawable;
@@ -47,6 +51,7 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
     private EditTextBoldCursor amountField;
     private EditTextBoldCursor currencyField;
+
 
     private int user_id;
 
@@ -71,8 +76,22 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
         NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.updateInterfaces);
     }
 
+    private void walletIsNotReady(Context context) {
+        AlertDialog progressDialog = new AlertDialog(context, 2);
+        progressDialog.setMessage(LocaleController.getString("WalletNotReady", R.string.WalletNotReady));
+        progressDialog.setCanceledOnTouchOutside(true);
+        progressDialog.setCancelable(true);
+        progressDialog.setOnCancelListener(dialog -> { this.removeSelfFromStack(); });
+        progressDialog.show();
+    }
+
     @Override
     public View createView(Context context) {
+
+        WalletActivity wallet = WalletActivity.instance;
+
+        fragmentView = new ScrollView(context);
+
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);
         actionBar.setAllowOverlayTitle(true);
         actionBar.setTitle(LocaleController.getString("Invoice", R.string.Invoice));
@@ -83,15 +102,39 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
                 if (id == -1) {
                     finishFragment();
                 } else if (id == done_button) {
-                    //SEND INVOICE
+
+                    Editable amount = amountField.getText();
+                    Editable token = amountField.getText();
+
+                    wallet.getAddress(token, (address)->{
+
+                        String invoice = String.format("%s/%s/%s", amount, token, address);
+
+                        //SEND INVOICE
+
+                    });
                 }
             }
         });
 
+
+
         ActionBarMenu menu = actionBar.createMenu();
         menu.addItemWithWidth(done_button, R.drawable.ic_done, AndroidUtilities.dp(56));
 
-        fragmentView = new ScrollView(context);
+
+        if(wallet == null) {
+            walletIsNotReady(context);
+            return fragmentView;
+        }
+
+
+        //wallet.getAddress("btc", (x)-> {
+        //
+        //});
+
+
+
 
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -126,6 +169,8 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
             return false;
         });
 
+
+
         currencyField = new EditTextBoldCursor(context);
         currencyField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         currencyField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
@@ -142,15 +187,12 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
         currencyField.setCursorSize(AndroidUtilities.dp(20));
         currencyField.setCursorWidth(1.5f);
         linearLayout.addView(currencyField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 16, 24, 0));
-        currencyField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE) {
-                    //doneButton.performClick();
-                    return true;
-                }
-                return false;
+        currencyField.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                //doneButton.performClick();
+                return true;
             }
+            return false;
         });
 
 
