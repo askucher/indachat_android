@@ -558,6 +558,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
     private final static int attach_document = 4;
     private final static int attach_contact = 5;
     private final static int attach_location = 6;
+    private final static int attach_invoice = 7;
 
     private final static int text_bold = 50;
     private final static int text_italic = 51;
@@ -4931,6 +4932,15 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                         FileLog.e(e);
                     }
                 }
+            });
+            presentFragment(fragment);
+        } else if (which == attach_invoice) {
+            CreateInvoiceActivity fragment = new CreateInvoiceActivity();
+            fragment.setDelegate(audios -> {
+                fillEditingMediaWithCaption(null, null);
+                //SendMessagesHelper.prepareSendingAudioDocuments(audios, dialog_id, replyingMessageObject, editingMessageObject);
+                hideFieldPanel();
+                DataQuery.getInstance(currentAccount).cleanDraft(dialog_id, true);
             });
             presentFragment(fragment);
         } else if (which == attach_audio) {

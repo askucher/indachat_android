@@ -2181,4 +2181,6 @@
     <string name="formatterDay24H">HH:mm</string>
     <string name="formatterDay12H">h:mm a</string>
     <string name="formatDateAtTime">%1$s a las %2$s</string>
+    <string name="Invoice">Factura</string>
+    <string name="Wallet">Billetera</string>
 </resources>

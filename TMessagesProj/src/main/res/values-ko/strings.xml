@@ -2181,4 +2181,6 @@
     <string name="formatterDay24H">HH:mm</string>
     <string name="formatterDay12H">a h:mm</string>
     <string name="formatDateAtTime">%1$s %2$s</string>
+    <string name="Invoice">송장</string>
+    <string name="Wallet">지갑</string>
 </resources>

@@ -505,6 +505,7 @@
     <string name="ChatVideo">Video</string>
     <string name="ChatDocument">File</string>
     <string name="ChatCamera">Camera</string>
+    <string name="Invoice">Invoice</string>
     <string name="NoMessages">No messages here yet...</string>
     <string name="ForwardedMessage">Forwarded message</string>
     <string name="From">From</string>
