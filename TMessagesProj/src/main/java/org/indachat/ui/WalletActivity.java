@@ -47,6 +47,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
         webView.setDefaultHandler(new DefaultHandler());
         webView.setWebChromeClient(new WebChromeClient() {});
+        webView.getSettings().setDomStorageEnabled(true);
         webView.loadUrl("file:///android_asset/wallet.html");
 
         instance = this;
