@@ -57,6 +57,7 @@ import org.indachat.ui.ActionBar.BaseFragment;
 import org.indachat.ui.ChatActivity;
 import org.indachat.ui.Components.AlertsCreator;
 import org.indachat.ui.PaymentFormActivity;
+import org.indachat.ui.WalletActivity;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -69,6 +70,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SendMessagesHelper implements NotificationCenter.NotificationCenterDelegate {
 
@@ -81,6 +84,7 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
 
     private static DispatchQueue mediaSendQueue = new DispatchQueue("mediaSendQueue");
     private static ThreadPoolExecutor mediaSendThreadPool;
+    private static Pattern invoicePattern = Pattern.compile("^(\\d+(?:\\.\\d+)?|\\.\\d+)\\/([a-z_]+)/([0-9a-zA-Z]+)(?:/([0-9a-zA-Z]+))?$");
 
     static {
         int cores;
@@ -1956,10 +1960,34 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
                 if (button.data != null) {
                     req.flags |= 1;
                     req.data = button.data;
+                    String s = new String(button.data);
+                    if (s.contentEquals("invoice_accept")) {
+                        this.acceptInvoice(messageObject, req);
+                        return;
+                    }
                 }
                 ConnectionsManager.getInstance(currentAccount).sendRequest(req, requestDelegate, ConnectionsManager.RequestFlagFailOnServerErrors);
             }
         }
+    }
+
+    private void acceptInvoice(MessageObject messageObject, TLRPC.TL_messages_getBotCallbackAnswer req) {
+        Matcher matcher = invoicePattern.matcher(messageObject.messageOwner.message);
+        if (!matcher.find()) {
+            return;
+        }
+        String amountString = matcher.group(1);
+        String coinString = matcher.group(2);
+        String tokenString = matcher.group(3);
+
+        WalletActivity wallet = WalletActivity.instance;
+
+        wallet.sendTransaction(coinString, tokenString, amountString, (txId) -> {
+            RequestDelegate requestDelegate = (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+            });
+
+            ConnectionsManager.getInstance(currentAccount).sendRequest(req, requestDelegate, ConnectionsManager.RequestFlagFailOnServerErrors);
+        });
     }
 
     public boolean isSendingCallback(MessageObject messageObject, TLRPC.KeyboardButton button) {

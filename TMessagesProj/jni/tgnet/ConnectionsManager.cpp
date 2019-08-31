@@ -1513,8 +1513,9 @@ void ConnectionsManager::initDatacenters() {
 
 
 #ifdef PATCH_BY_NEBULACHAT
-//    std::string _nebulaChatServer("192.168.100.110");
-    std::string _nebulaChatServer("88.99.172.114");
+    std::string _nebulaChatServer("195.201.231.36");
+//new server
+//    std::string _nebulaChatServer("88.99.172.114");
     //old server
 //    std::string _nebulaChatServer("185.52.0.148");
     // std::string _nebulaChatServer("192.168.1.150");
