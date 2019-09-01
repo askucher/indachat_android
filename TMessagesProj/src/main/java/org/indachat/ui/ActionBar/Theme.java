@@ -2277,12 +2277,14 @@ public class Theme {
             return;
         }
         WalletActivity wallet = WalletActivity.instance;
-
-        if (nightTheme)
-            wallet.setTheme("dark", (x)-> {});
-        else
-            wallet.setTheme("light", (x)-> {});
-
+        if (wallet != null) {
+            if (nightTheme)
+                wallet.setTheme("dark", (x) -> {
+                });
+            else
+                wallet.setTheme("light", (x) -> {
+                });
+        }
 
         ThemeEditorView editorView = ThemeEditorView.getInstance();
         if (editorView != null) {

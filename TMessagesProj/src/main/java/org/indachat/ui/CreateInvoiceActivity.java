@@ -126,6 +126,11 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
         WalletActivity wallet = WalletActivity.instance;
 
+        if (wallet == null) {
+            this.removeSelfFromStack();
+            return fragmentView;
+        }
+
         fragmentView = new ScrollView(context);
 
         actionBar.setBackButtonImage(R.drawable.ic_ab_back);

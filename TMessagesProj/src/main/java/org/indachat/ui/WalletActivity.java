@@ -60,7 +60,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         }
 
 
-
+        /*
         webView.setWebViewClient(new WebViewClient(){
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
@@ -72,7 +72,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
                 }
             }
         });
-
+        */
         webView.loadUrl("file:///android_asset/wallet.html");
     }
 
@@ -140,30 +140,31 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         };
         FrameLayout frameLayout = (FrameLayout) fragmentView;
 
-        frameLayout.addView(webView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
         //loadWallet(context);
+        frameLayout.addView(webView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+
 
         //initKeyBoardListener();
 
         return fragmentView;
     }
 
-    private Boolean isAPIActive() {
-        if (webView == null) return false;
-        return webView.getStartupMessage() == null;
+    private Boolean inactiveAPI() {
+        if (webView == null) return true;
+        return webView.getStartupMessage() != null;
     }
 
 
     public void refreshPressed() {
-            if (!isAPIActive()) return;
+            if (inactiveAPI()) return;
             webView.callHandler("walletRPC", "{ method: \"refresh\", args: [] }", data -> {
 
             });
     }
 
     public void lockPressed() {
-        if (!isAPIActive()) return;
+        if (inactiveAPI()) return;
         webView.callHandler("walletRPC", "{ method: \"lock\", args: [] }", data -> {
 
         });
@@ -174,7 +175,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
     }
 
     public void chooseNetwork(String net, CallBackFunction callback) {
-        if (!isAPIActive()) { walletIsNotCreated(callback); return; }
+        if (inactiveAPI()) { walletIsNotCreated(callback); return; }
 
         webView.callHandler("walletRPC", "{ method: \"use\", args: [\"" + net + "\"] }", callback);
     }
@@ -182,29 +183,29 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
 
     public void setTheme(String theme, CallBackFunction callback) {
-        if (!isAPIActive()) { walletIsNotCreated(callback); return; }
+        if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"setTheme\", args: [\"" + theme + "\"] }", callback);
     }
 
 
     public void getBalance(String token, CallBackFunction callback) {
-        if (!isAPIActive()) { walletIsNotCreated(callback); return; }
+        if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"getBalance\", token:\"" + token + "\" , args: [] }", callback);
     }
 
     public void getAddress(String token, CallBackFunction callback) {
-        if (!isAPIActive()) { walletIsNotCreated(callback); return; }
+        if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"getAddress\", token:\"" + token + "\" , args: [] }", callback);
     }
 
 
     public void getSupportedTokens(CallBackFunction callback) {
-        if (!isAPIActive()) { walletIsNotCreated(callback); return; }
+        if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"getSupportedTokens\", args: [] }", callback);
     }
 
     public void sendTransaction(String token, String to, String amount, CallBackFunction callback) {
-        if (!isAPIActive()) { walletIsNotCreated(callback); return; }
+        if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         //webView.
         webView.callHandler("walletRPC", "{ method: \"sendTransaction\", token:\"" + token + "\" , args: [\"" + to + "\",\"" + amount + "\"] }", callback);
     }

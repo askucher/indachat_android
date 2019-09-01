@@ -1982,6 +1982,10 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
 
         WalletActivity wallet = WalletActivity.instance;
 
+        if (wallet == null) {
+            return;
+        }
+
         wallet.sendTransaction(coinString, tokenString, amountString, (txId) -> {
             RequestDelegate requestDelegate = (response, error) -> AndroidUtilities.runOnUIThread(() -> {
             });
