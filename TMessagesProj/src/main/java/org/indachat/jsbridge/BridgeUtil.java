@@ -1,6 +1,7 @@
 package org.indachat.jsbridge;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.webkit.WebView;
 
 import java.io.BufferedReader;
@@ -82,7 +83,10 @@ public class BridgeUtil {
 	 * @param path 路径
 	 */
     public static void webViewLoadLocalJs(WebView view, String path){
-        String jsContent = assetFile2Str(view.getContext(), path);
+
+        //String jsContent = assetFile2Str(view.getContext(), path);
+
+        String jsContent = "!function(){if(!window.WebViewJavascriptBridge){var e,n,a=[],t=[],i={},r=\"yy\",c=\"__QUEUE_MESSAGE__/\",d={},s=1,o=window.WebViewJavascriptBridge={init:function(e){if(o._messageHandler)throw new Error(\"WebViewJavascriptBridge.init called twice\");o._messageHandler=e;var n=t;t=null;for(var a=0;a<n.length;a++)p(n[a])},send:function(e,n){u({data:e},n)},registerHandler:function(e,n){i[e]=n},callHandler:function(e,n,a){u({handlerName:e,data:n},a)},_fetchQueue:function(){var e=JSON.stringify(a);a=[],\"[]\"!==e&&(n.src=r+\"://return/_fetchQueue/\"+encodeURIComponent(e))},_handleMessageFromNative:function(e){console.log(e),t&&t.push(e),p(e)}},l=document;!function(n){(e=n.createElement(\"iframe\")).style.display=\"none\",n.documentElement.appendChild(e)}(l),function(e){(n=e.createElement(\"iframe\")).style.display=\"none\",e.documentElement.appendChild(n)}(l);var f=l.createEvent(\"Events\");f.initEvent(\"WebViewJavascriptBridgeReady\"),f.bridge=o,l.dispatchEvent(f)}function u(n,t){if(t){var i=\"cb_\"+s+++\"_\"+(new Date).getTime();d[i]=t,n.callbackId=i}a.push(n),e.src=r+\"://\"+c}function p(e){setTimeout(function(){var n,a=JSON.parse(e);if(a.responseId){if(!(n=d[a.responseId]))return;n(a.responseData),delete d[a.responseId]}else{if(a.callbackId){var t=a.callbackId;n=function(e){u({responseId:t,responseData:e})}}var r=o._messageHandler;a.handlerName&&(r=i[a.handlerName]);try{r(a.data,n)}catch(e){\"undefined\"!=typeof console&&console.log(\"WebViewJavascriptBridge: WARNING: javascript handler threw.\",a,e)}}})}}();";
         view.loadUrl("javascript:" + jsContent);
     }
 
