@@ -158,14 +158,14 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
     public void refreshPressed() {
             if (inactiveAPI()) return;
-            webView.callHandler("walletRPC", "{ method: \"refresh\", args: [] }", data -> {
+            webView.callHandler("walletRPC", "{ \"method\": \"refresh\", \"args\": [] }", data -> {
 
             });
     }
 
     public void lockPressed() {
         if (inactiveAPI()) return;
-        webView.callHandler("walletRPC", "{ method: \"lock\", args: [] }", data -> {
+        webView.callHandler("walletRPC", "{ \"method\": \"lock\", \"args\": [] }", data -> {
 
         });
     }
@@ -177,37 +177,37 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
     public void chooseNetwork(String net, CallBackFunction callback) {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
 
-        webView.callHandler("walletRPC", "{ method: \"use\", args: [\"" + net + "\"] }", callback);
+        webView.callHandler("walletRPC", "{ \"method\": \"use\", \"args\": [\"" + net + "\"] }", callback);
     }
 
 
 
     public void setTheme(String theme, CallBackFunction callback) {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
-        webView.callHandler("walletRPC", "{ method: \"setTheme\", args: [\"" + theme + "\"] }", callback);
+        webView.callHandler("walletRPC", "{ \"method\": \"setTheme\", \"args\": [\"" + theme + "\"] }", callback);
     }
 
 
     public void getBalance(String token, CallBackFunction callback) {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
-        webView.callHandler("walletRPC", "{ method: \"getBalance\", token:\"" + token + "\" , args: [] }", callback);
+        webView.callHandler("walletRPC", "{ \"method\": \"getBalance\", \"token\":\"" + token + "\" , \"args\": [] }", callback);
     }
 
     public void getAddress(String token, CallBackFunction callback) {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
-        webView.callHandler("walletRPC", "{ method: \"getAddress\", token:\"" + token + "\" , args: [] }", callback);
+        webView.callHandler("walletRPC", "{ \"method\": \"getAddress\", \"token\":\"" + token + "\" , \"args\": [] }", callback);
     }
 
 
     public void getSupportedTokens(CallBackFunction callback) {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
-        webView.callHandler("walletRPC", "{ method: \"getSupportedTokens\", args: [] }", callback);
+        webView.callHandler("walletRPC", "{ \"method\": \"getSupportedTokens\", \"args\": [] }", callback);
     }
 
     public void sendTransaction(String token, String to, String amount, CallBackFunction callback) {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         //webView.
-        webView.callHandler("walletRPC", "{ method: \"sendTransaction\", token:\"" + token + "\" , args: [\"" + to + "\",\"" + amount + "\"] }", callback);
+        webView.callHandler("walletRPC", "{ \"method\": \"sendTransaction\", \"token\":\"" + token + "\" , \"args\": [\"" + to + "\",\"" + amount + "\"] }", callback);
     }
 
 

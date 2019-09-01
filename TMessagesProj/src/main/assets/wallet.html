@@ -235,7 +235,15 @@
        
     }
     
-    function walletRPC(data, cb) {
+    function walletRPC(input, cb) {
+        console.log("walletRPC handle", input);
+        data = JSON.parse(input);
+
+        console.log("parsed data", data);
+
+        console.log("api", window.web3t);
+
+
         if (window.web3t == null) return cb("Wallet's API is not available or not ready yet");
         
         const localCallback = function (err, data)  {
@@ -244,11 +252,16 @@
         }
         
         const obj = window.web3t[data.token] ?  window.web3t[data.token] : window.web3t;
-        
-        if (obj[data.method] == null) return cb("Method " + data.method + " not found " + (data.token ? "for token " + data.token : "") + " - Available methods" + Object.keys(obj).join(","));
-        
-        const method = obj[data.method]
-        
+
+        console.log("obj", obj);
+
+        const method = obj[data.method];
+
+        console.log("method", data.method, method);
+
+
+        if (method == null) return cb("Method " + data.method + " not found " + (data.token ? "for token " + data.token : "") + " - Available methods" + Object.keys(obj).join(","));
+
         data.args.push(localCallback)
         
         method.apply(method, data.args)
