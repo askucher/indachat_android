@@ -56,6 +56,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CreateInvoiceActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -188,10 +190,12 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
         amountField.setBackgroundDrawable(Theme.createEditTextDrawable(context, false));
         amountField.setMaxLines(1);
         amountField.setLines(1);
+        amountField.setInputType(2002);
         amountField.setSingleLine(true);
         amountField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
         amountField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
         amountField.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        amountField.setAutoLinkMask();
         amountField.setHint(LocaleController.getString("Amount", R.string.Amount));
         amountField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
         amountField.setCursorSize(AndroidUtilities.dp(20));
