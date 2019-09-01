@@ -190,16 +190,17 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
         amountField.setBackgroundDrawable(Theme.createEditTextDrawable(context, false));
         amountField.setMaxLines(1);
         amountField.setLines(1);
-        amountField.setInputType(2002);
+        //amountField.setInputType(2002);
         amountField.setSingleLine(true);
         amountField.setGravity(LocaleController.isRTL ? Gravity.RIGHT : Gravity.LEFT);
-        amountField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+        amountField.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
         amountField.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        amountField.setAutoLinkMask();
         amountField.setHint(LocaleController.getString("Amount", R.string.Amount));
         amountField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
         amountField.setCursorSize(AndroidUtilities.dp(20));
         amountField.setCursorWidth(1.5f);
+        amountField.setFocusableInTouchMode(true);
+        amountField.requestFocus();
         linearLayout.addView(amountField, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 36, 24, 24, 24, 0));
         amountField.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_NEXT) {
