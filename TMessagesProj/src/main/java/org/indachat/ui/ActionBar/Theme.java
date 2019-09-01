@@ -45,6 +45,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.StateSet;
 
+import org.indachat.ui.WalletActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.indachat.messenger.AndroidUtilities;
@@ -2275,6 +2276,14 @@ public class Theme {
         if (themeInfo == null) {
             return;
         }
+        WalletActivity wallet = WalletActivity.instance;
+
+        if (nightTheme)
+            wallet.setTheme("dark", (x)-> {});
+        else
+            wallet.setTheme("light", (x)-> {});
+
+
         ThemeEditorView editorView = ThemeEditorView.getInstance();
         if (editorView != null) {
             editorView.destroy();
@@ -3006,7 +3015,8 @@ public class Theme {
             chat_attachButtonDrawables[0] = new AttachCameraDrawable();
             chat_attachButtonDrawables[1] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_gallery);
             chat_attachButtonDrawables[2] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_video);
-            chat_attachButtonDrawables[3] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_audio);
+            //chat_attachButtonDrawables[3] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_audio);
+            chat_attachButtonDrawables[3] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.bot_invoice);
             chat_attachButtonDrawables[4] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_file);
             chat_attachButtonDrawables[5] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_contact);
             chat_attachButtonDrawables[6] = createCircleDrawableWithIcon(AndroidUtilities.dp(54), R.drawable.attach_location);

@@ -14,8 +14,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -35,7 +37,7 @@ import android.webkit.WebChromeClient;
 import org.indachat.jsbridge.BridgeWebView;
 import org.indachat.jsbridge.CallBackFunction;
 import org.indachat.jsbridge.DefaultHandler;
-
+import android.graphics.Rect;
 
 
 public class WalletActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
@@ -45,9 +47,7 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
     public static WalletActivity instance;
 
-    public WalletActivity(Bundle args, Context context) {
-        super(args);
-
+    private void loadWallet(Context context) {
         webView = new BridgeWebView(context);
 
         webView.setDefaultHandler(new DefaultHandler());
@@ -57,6 +57,9 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             webView.getSettings().setDatabasePath("/data/data/" + webView.getContext().getPackageName() + "/databases/");
         }
+
+
+
         webView.setWebViewClient(new WebViewClient(){
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
@@ -70,8 +73,14 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
         });
 
         webView.loadUrl("file:///android_asset/wallet.html");
+    }
 
+    public WalletActivity(Bundle args, Context context) {
+        super(args);
+
+        loadWallet(context);
         instance = this;
+
 
     }
 
@@ -132,49 +141,68 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
         frameLayout.addView(webView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
+        //loadWallet(context);
 
+        //initKeyBoardListener();
 
         return fragmentView;
     }
 
 
     public void refreshPressed() {
+            if (webView == null) {
+                return;
+            }
             webView.callHandler("walletRPC", "{ method: \"refresh\", args: [] }", data -> {
 
             });
     }
 
     public void lockPressed() {
+        if (webView == null) {
+            return;
+        }
         webView.callHandler("walletRPC", "{ method: \"lock\", args: [] }", data -> {
 
         });
     }
 
+    private void walletIsNotCreated(CallBackFunction callback) {
+        callback.onCallBack("Wallet is not created");
+    }
+
     public void chooseNetwork(String net, CallBackFunction callback) {
+        if (webView == null) { walletIsNotCreated(callback); return; }
+
         webView.callHandler("walletRPC", "{ method: \"use\", args: [\"" + net + "\"] }", callback);
     }
 
 
 
     public void setTheme(String theme, CallBackFunction callback) {
+        if (webView == null) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"setTheme\", args: [\"" + theme + "\"] }", callback);
     }
 
 
     public void getBalance(String token, CallBackFunction callback) {
+        if (webView == null) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"getBalance\", token:\"" + token + "\" , args: [] }", callback);
     }
 
     public void getAddress(String token, CallBackFunction callback) {
+        if (webView == null) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"getAddress\", token:\"" + token + "\" , args: [] }", callback);
     }
 
 
     public void getSupportedTokens(CallBackFunction callback) {
+        if (webView == null) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"getSupportedTokens\", args: [] }", callback);
     }
 
     public void sendTransaction(String token, String to, String amount, CallBackFunction callback) {
+        if (webView == null) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ method: \"sendTransaction\", token:\"" + token + "\" , args: [\"" + to + "\",\"" + amount + "\"] }", callback);
     }
 
@@ -206,6 +234,38 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
     }
 
 
+    private void initKeyBoardListener() {
+        // Минимальное значение клавиатуры.
+        // Threshold for minimal keyboard height.
+        final int MIN_KEYBOARD_HEIGHT_PX = 150;
+        // Окно верхнего уровня view.
+        // Top-level window decor view.
+        final View decorView = this.webView;
+        // Регистрируем глобальный слушатель. Register global layout listener.
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            // Видимый прямоугольник внутри окна.
+            // Retrieve visible rectangle inside window.
+            private final Rect windowVisibleDisplayFrame = new Rect();
+            private int lastVisibleDecorViewHeight;
+
+            @Override
+            public void onGlobalLayout() {
+                decorView.getWindowVisibleDisplayFrame(windowVisibleDisplayFrame);
+                final int visibleDecorViewHeight = windowVisibleDisplayFrame.height();
+
+                if (lastVisibleDecorViewHeight != 0) {
+                    if (lastVisibleDecorViewHeight > visibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX) {
+                        Log.d("Pasha", "SHOW");
+                    } else if (lastVisibleDecorViewHeight + MIN_KEYBOARD_HEIGHT_PX < visibleDecorViewHeight) {
+                        Log.d("Pasha", "HIDE");
+                    }
+                }
+                // Сохраняем текущую высоту view до следующего вызова.
+                // Save current decor view height for the next call.
+                lastVisibleDecorViewHeight = visibleDecorViewHeight;
+            }
+        });
+    }
 
 
     @Override
