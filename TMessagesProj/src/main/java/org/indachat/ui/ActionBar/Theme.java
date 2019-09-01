@@ -47,6 +47,7 @@ import android.util.StateSet;
 
 import org.indachat.ui.WalletActivity;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.indachat.messenger.AndroidUtilities;
 import org.indachat.messenger.ApplicationLoader;
@@ -1810,7 +1811,9 @@ public class Theme {
         } else {
             currentDayTheme = applyingTheme;
         }
-        applyTheme(applyingTheme, false, false, false);
+
+            applyTheme(applyingTheme, false, false, false);
+
         AndroidUtilities.runOnUIThread(Theme::checkAutoNightThemeConditions);
     }
 
@@ -2205,7 +2208,7 @@ public class Theme {
         }
     }
 
-    public static void applyPreviousTheme() {
+    public static void applyPreviousTheme()  {
         if (previousTheme == null) {
             return;
         }
@@ -2264,15 +2267,15 @@ public class Theme {
         return null;
     }
 
-    public static void applyTheme(ThemeInfo themeInfo) {
+    public static void applyTheme(ThemeInfo themeInfo)  {
         applyTheme(themeInfo, true, true, false);
     }
 
-    public static void applyTheme(ThemeInfo themeInfo, boolean animated) {
+    public static void applyTheme(ThemeInfo themeInfo, boolean animated)  {
         applyTheme(themeInfo, true, true, animated);
     }
 
-    public static void applyTheme(ThemeInfo themeInfo, boolean save, boolean removeWallpaperOverride, final boolean nightTheme) {
+    public static void applyTheme(ThemeInfo themeInfo, boolean save, boolean removeWallpaperOverride, final boolean nightTheme)  {
         if (themeInfo == null) {
             return;
         }

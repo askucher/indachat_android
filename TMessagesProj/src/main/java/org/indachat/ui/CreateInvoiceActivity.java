@@ -31,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.indachat.jsbridge.CallBackFunction;
+import org.indachat.jsbridge.Message;
 import org.indachat.messenger.AndroidUtilities;
 import org.indachat.PhoneFormat.PhoneFormat;
 import org.indachat.messenger.ContactsController;
@@ -49,6 +50,12 @@ import org.indachat.ui.Components.BackupImageView;
 import org.indachat.ui.ActionBar.BaseFragment;
 import org.indachat.ui.Components.EditTextBoldCursor;
 import org.indachat.ui.Components.LayoutHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateInvoiceActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
@@ -217,12 +224,30 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
             wallet.getSupportedTokens((items)-> {
 
-                String[] paths = {"BTC", "ETH"};
 
-                ArrayAdapter<String>adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, paths);
+                try {
+                    JSONObject jsonObject = new JSONObject(items);
 
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                currencyChoose.setAdapter(adapter);
+                    List<String> lisetta = new ArrayList<>();
+                    JSONArray jArray = jsonObject.getJSONArray("");
+                    if (jArray != null) {
+                        for (int i = 0; i < jArray.length(); i++) {
+                            lisetta.add(jArray.getString(i));
+                        }
+                    }
+
+                    ArrayAdapter<String>adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, lisetta);
+
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    currencyChoose.setAdapter(adapter);
+
+                } catch (JSONException e) {
+
+                }
+
+
+
+
                 //currencyChoose.setOnItemSelectedListener(context);
 
 

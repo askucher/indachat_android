@@ -267,7 +267,7 @@ public class ActionBarLayout extends FrameLayout {
         }
     }
 
-    public void onResume() {
+    public void onResume()  {
         if (transitionAnimationInProgress) {
             if (currentAnimation != null) {
                 currentAnimation.cancel();
@@ -1431,7 +1431,7 @@ public class ActionBarLayout extends FrameLayout {
         }
     }
 
-    private void checkNeedRebuild() {
+    private void checkNeedRebuild()  {
         if (rebuildAfterAnimation) {
             rebuildAllFragmentViews(rebuildLastAfterAnimation, showLastAfterAnimation);
             rebuildAfterAnimation = false;

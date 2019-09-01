@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import org.indachat.messenger.FileLog;
 import org.indachat.messenger.UserConfig;
 import org.indachat.tgnet.ConnectionsManager;
+import org.json.JSONException;
 
 public class BaseFragment {
 
@@ -289,7 +290,7 @@ public class BaseFragment {
         return null;
     }
 
-    public void startActivityForResult(final Intent intent, final int requestCode) {
+    public void startActivityForResult(final Intent intent, final int requestCode)  {
         if (parentLayout != null) {
             parentLayout.startActivityForResult(intent, requestCode);
         }

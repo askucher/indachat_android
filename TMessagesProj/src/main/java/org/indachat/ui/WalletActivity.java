@@ -38,6 +38,8 @@ import android.webkit.WebChromeClient;
 import org.indachat.jsbridge.BridgeWebView;
 import org.indachat.jsbridge.CallBackFunction;
 import org.indachat.jsbridge.DefaultHandler;
+import org.json.JSONException;
+
 import android.graphics.Rect;
 
 
@@ -172,9 +174,10 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
 
     private void walletIsNotCreated(CallBackFunction callback) {
         callback.onCallBack("Wallet's API is not accessible");
+
     }
 
-    public void chooseNetwork(String net, CallBackFunction callback) {
+    public void chooseNetwork(String net, CallBackFunction callback)  {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
 
         webView.callHandler("walletRPC", "{ \"method\": \"use\", \"args\": [\"" + net + "\"] }", callback);
@@ -188,23 +191,23 @@ public class WalletActivity extends BaseFragment implements NotificationCenter.N
     }
 
 
-    public void getBalance(String token, CallBackFunction callback) {
+    public void getBalance(String token, CallBackFunction callback)  {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ \"method\": \"getBalance\", \"token\":\"" + token + "\" , \"args\": [] }", callback);
     }
 
-    public void getAddress(String token, CallBackFunction callback) {
+    public void getAddress(String token, CallBackFunction callback)  {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ \"method\": \"getAddress\", \"token\":\"" + token + "\" , \"args\": [] }", callback);
     }
 
 
-    public void getSupportedTokens(CallBackFunction callback) {
+    public void getSupportedTokens(CallBackFunction callback)  {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         webView.callHandler("walletRPC", "{ \"method\": \"getSupportedTokens\", \"args\": [] }", callback);
     }
 
-    public void sendTransaction(String token, String to, String amount, CallBackFunction callback) {
+    public void sendTransaction(String token, String to, String amount, CallBackFunction callback)  {
         if (inactiveAPI()) { walletIsNotCreated(callback); return; }
         //webView.
         webView.callHandler("walletRPC", "{ \"method\": \"sendTransaction\", \"token\":\"" + token + "\" , \"args\": [\"" + to + "\",\"" + amount + "\"] }", callback);
