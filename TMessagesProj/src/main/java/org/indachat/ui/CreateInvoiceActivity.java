@@ -226,10 +226,9 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
 
                 try {
-                    JSONObject jsonObject = new JSONObject(items);
+                    JSONArray jArray = new JSONArray(items);
 
                     List<String> lisetta = new ArrayList<>();
-                    JSONArray jArray = jsonObject.getJSONArray("");
                     if (jArray != null) {
                         for (int i = 0; i < jArray.length(); i++) {
                             lisetta.add(jArray.getString(i));
