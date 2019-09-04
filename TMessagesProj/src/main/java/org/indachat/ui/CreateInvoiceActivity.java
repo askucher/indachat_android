@@ -36,6 +36,7 @@ import org.indachat.messenger.AndroidUtilities;
 import org.indachat.PhoneFormat.PhoneFormat;
 import org.indachat.messenger.ContactsController;
 import org.indachat.messenger.LocaleController;
+import org.indachat.messenger.SendMessagesHelper;
 import org.indachat.tgnet.TLRPC;
 import org.indachat.messenger.MessagesController;
 import org.indachat.messenger.NotificationCenter;
@@ -64,20 +65,16 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
     private EditTextBoldCursor amountField;
     private Spinner currencyChoose;
 
-    private int user_id;
+    private long dialog_id;
 
     private final static int done_button = 1;
 
-    public CreateInvoiceActivity() {
-
+    public CreateInvoiceActivity(long dialog_id) {
+        this.dialog_id = dialog_id;
     }
 
     @Override
     public boolean onFragmentCreate() {
-        //NotificationCenter.getInstance(currentAccount).addObserver(this, NotificationCenter.updateInterfaces);
-        //user_id = getArguments().getInt("user_id", 0);
-        //TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(user_id);
-        //return user != null && super.onFragmentCreate();
         return super.onFragmentCreate();
     }
 
@@ -151,17 +148,33 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
             public void onItemClick(int id) {
                 if (id == -1) {
                     finishFragment();
-                } else if (id == done_button) {
-
+                    return;
+                }
+                if (id == done_button) {
                     String amount = amountField.getText().toString();
                     String token = currencyChoose.getSelectedItem().toString();
 
                     wallet.getAddress(token, (address)->{
 
                         String invoice = String.format("%s/%s/%s", amount, token, address);
+                        TLRPC.TL_replyInlineMarkup replyMarkup = new TLRPC.TL_replyInlineMarkup();
+                        TLRPC.TL_keyboardButtonRow row = new TLRPC.TL_keyboardButtonRow();
+                        TLRPC.TL_keyboardButtonCallback accept = new TLRPC.TL_keyboardButtonCallback();
+                        TLRPC.TL_keyboardButtonCallback cancel = new TLRPC.TL_keyboardButtonCallback();
+                        accept.data = "invoice_accept".getBytes();
+                        accept.text = "Accept";
+                        row.buttons.add(accept);
+                        cancel.data = "invoice_cancel".getBytes();
+                        cancel.text = "Cancel";
+                        row.buttons.add(cancel);
+                        replyMarkup.rows.add(row);
 
-                        //SEND INVOICE
-
+                        SendMessagesHelper.getInstance(currentAccount).sendMessage(
+                                invoice, dialog_id,
+                                null, null, false,
+                                null, replyMarkup, null
+                        );
+                        finishFragment();
                     });
                 }
             }
@@ -171,9 +184,6 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
 
         ActionBarMenu menu = actionBar.createMenu();
         menu.addItemWithWidth(done_button, R.drawable.ic_done, AndroidUtilities.dp(56));
-
-
-
 
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.VERTICAL);

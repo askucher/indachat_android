@@ -4935,7 +4935,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             });
             presentFragment(fragment);
         } else if (which == attach_invoice) {
-            CreateInvoiceActivity fragment = new CreateInvoiceActivity();
+            CreateInvoiceActivity fragment = new CreateInvoiceActivity(dialog_id);
             /*
             fragment.setDelegate(audios -> {
                 fillEditingMediaWithCaption(null, null);
