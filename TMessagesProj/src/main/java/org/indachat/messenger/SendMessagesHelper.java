@@ -1996,11 +1996,17 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
 
             RequestDelegate requestDelegate = (response, error) -> AndroidUtilities.runOnUIThread(() -> {
                 //We need to so something on ui thread?
+
+                //parentFragment.removeSelfFromStack();
+                wallet.removeSelfFromStack();
+
             });
             req.data = String.format("invoice_transaction_sent_%s", txId).getBytes();
 
             ConnectionsManager.getInstance(currentAccount).sendRequest(req, requestDelegate, ConnectionsManager.RequestFlagFailOnServerErrors);
         });
+
+        parentFragment.presentFragment(wallet);
 
 
     }
