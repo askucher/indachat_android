@@ -890,7 +890,9 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
 
             if (UserConfig.getInstance(currentAccount).isClientActivated() && (flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
                 if (intent != null && intent.getAction() != null && !restore) {
-                    if (Intent.ACTION_SEND.equals(intent.getAction())) {
+                    if ("wallet".equals(intent.getAction())) {
+                        actionBarLayout.presentFragment(this.wallet, true, false, true, false);
+                    } else if (Intent.ACTION_SEND.equals(intent.getAction())) {
                         boolean error = false;
                         String type = intent.getType();
                         if (type != null && type.equals(ContactsContract.Contacts.CONTENT_VCARD_TYPE)) {

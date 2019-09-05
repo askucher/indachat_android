@@ -9,6 +9,8 @@
 package org.indachat.messenger;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,6 +58,7 @@ import org.indachat.ui.ActionBar.AlertDialog;
 import org.indachat.ui.ActionBar.BaseFragment;
 import org.indachat.ui.ChatActivity;
 import org.indachat.ui.Components.AlertsCreator;
+import org.indachat.ui.LaunchActivity;
 import org.indachat.ui.PaymentFormActivity;
 import org.indachat.ui.WalletActivity;
 
@@ -1962,7 +1965,7 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
                     req.data = button.data;
                     String s = new String(button.data);
                     if (s.contentEquals("invoice_accept")) {
-                        this.acceptInvoice(messageObject, req);
+                        this.acceptInvoice(messageObject, req, parentFragment);
                         return;
                     }
                 }
@@ -1971,27 +1974,35 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
         }
     }
 
-    private void acceptInvoice(MessageObject messageObject, TLRPC.TL_messages_getBotCallbackAnswer req) {
+    private void acceptInvoice(MessageObject messageObject, TLRPC.TL_messages_getBotCallbackAnswer req, ChatActivity parentFragment) {
         Matcher matcher = invoicePattern.matcher(messageObject.messageOwner.message);
         if (!matcher.find()) {
             return;
         }
         String amountString = matcher.group(1);
-        String coinString = matcher.group(2);
-        String tokenString = matcher.group(3);
+        String token = matcher.group(2);
+        String address = matcher.group(3);
 
         WalletActivity wallet = WalletActivity.instance;
 
         if (wallet == null) {
             return;
         }
+        parentFragment.presentFragment(wallet);
+        wallet.sendTransaction(token, address, amountString, (txId) -> {
+            if (!Pattern.matches("^[0-9a-zA-Z]+$", txId)) {
+                return;
+            }
 
-        wallet.sendTransaction(coinString, tokenString, amountString, (txId) -> {
             RequestDelegate requestDelegate = (response, error) -> AndroidUtilities.runOnUIThread(() -> {
+                //We need to so something on ui thread?
             });
+            req.data = String.format("invoice_transaction_sent_%s", txId).getBytes();
 
             ConnectionsManager.getInstance(currentAccount).sendRequest(req, requestDelegate, ConnectionsManager.RequestFlagFailOnServerErrors);
         });
+
+
     }
 
     public boolean isSendingCallback(MessageObject messageObject, TLRPC.KeyboardButton button) {

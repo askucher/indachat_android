@@ -8,8 +8,10 @@
 
 package org.indachat.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ import org.indachat.ui.Components.AvatarDrawable;
 import org.indachat.ui.Components.BackupImageView;
 import org.indachat.ui.ActionBar.BaseFragment;
 import org.indachat.ui.Components.EditTextBoldCursor;
+import org.indachat.ui.Components.FragmentContextView;
 import org.indachat.ui.Components.LayoutHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,47 +88,60 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
     }
 
     private void walletIsNotReady(Context context) {
-        AlertDialog progressDialog = new AlertDialog(context, 2);
-        progressDialog.setMessage(LocaleController.getString("WalletNotReady", R.string.WalletNotReady));
-        progressDialog.setCanceledOnTouchOutside(true);
-        progressDialog.setCancelable(true);
-        progressDialog.setOnCancelListener(dialog -> { this.removeSelfFromStack(); });
-        progressDialog.show();
-    }
-
-    public void receiveInvoiceMock(String invoice, Context context) {
-
-        String[] invoiceParts = invoice.split("/");
-
-        String amount  = invoiceParts[0];
-        String token   = invoiceParts[1];
-        String address = invoiceParts[2];
-
-        WalletActivity wallet = WalletActivity.instance;
-
-        if (wallet == null) {
-            walletIsNotReady(context);
-            return;
-        }
-
-        wallet.getAddress("btc", (x)-> {
-
-            if (x.getClass() != String.class) {
-                walletIsNotReady(context);
+        AndroidUtilities.runOnUIThread(() -> {
+            Activity parentActivity = this.getParentActivity();
+            if (parentActivity == null) {
                 return;
             }
-
-            wallet.sendTransaction(token, address, amount, (tx)-> {
-
-                //Process TX
-
-
-            });
-
-
+            new AlertDialog.Builder(parentActivity)
+                .setTitle(LocaleController.getString("Warning", R.string.AppName))
+                .setMessage(LocaleController.getString("WalletNotReady", R.string.WalletNotReady))
+                .setPositiveButton(LocaleController.getString("OK", R.string.OK), (dialogInterface, i) -> {
+                    if (parentActivity instanceof LaunchActivity) {
+                        LaunchActivity launchActivity = (LaunchActivity) parentActivity;
+                        launchActivity.onBackPressed();
+                    }
+                })
+                .create().show();
         });
-
     }
+
+//    public void receiveInvoiceMock(String invoice, Context context) {
+//
+//        String[] invoiceParts = invoice.split("/");
+//
+//        String amount  = invoiceParts[0];
+//        String token   = invoiceParts[1];
+//        String address = invoiceParts[2];
+//
+//        WalletActivity wallet = WalletActivity.instance;
+//
+//        if (wallet == null) {
+//            walletIsNotReady(context);
+//            return;
+//        }
+//        Intent intent = new Intent(context, LaunchActivity.class);
+//        intent.setAction("wallet");
+//        context.startActivity(intent);
+//
+//        wallet.getAddress("btc", (x)-> {
+//
+//            if (!Pattern.matches("^[0-9a-zA-Z]+$", x)) {
+//                walletIsNotReady(context);
+//                return;
+//            }
+//
+//            wallet.sendTransaction(token, address, amount, (tx)-> {
+//
+//                //Process TX
+//
+//
+//            });
+//
+//
+//        });
+//
+//    }
 
     @Override
     public View createView(Context context) {
@@ -229,11 +245,11 @@ public class CreateInvoiceActivity extends BaseFragment implements NotificationC
             walletIsNotReady(context);
             return fragmentView;
         }
-
         wallet.getAddress("btc", (x)-> {
 
-            if (x.getClass() != String.class) {
+            if (!Pattern.matches("^[0-9a-zA-Z]+$", x)) {
                 walletIsNotReady(context);
+
                 return;
             }
 
