@@ -1752,7 +1752,7 @@ JNIEXPORT void Java_org_indachat_messenger_Intro_onDrawFrame(JNIEnv *env, jclass
 
             fast_body.params.alpha = 1;
             fast_body.params.scale = xyzMake(scale, scale, 1);
-            draw_textured_shape(&fast_body, main_matrix, NORMAL);
+//            draw_textured_shape(&fast_body, main_matrix, NORMAL);
         }
 
         telegram_sphere.params.alpha = alpha;

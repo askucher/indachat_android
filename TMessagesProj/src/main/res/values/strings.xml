@@ -1817,13 +1817,13 @@
     <!--Intro view-->
     <string name="Page1Title">Indachat</string>
     <string name="Page2Title">Fast</string>
-    <string name="Page3Title">Free</string>
+    <string name="Page3Title">No ads</string>
     <string name="Page4Title">Secure</string>
     <string name="Page5Title">Powerful</string>
     <string name="Page6Title">Cloud-Based</string>
-    <string name="Page1Message">The world\'s **fastest** messaging app.\nIt is **free** and **secure**.</string>
+    <string name="Page1Message">Corporate messaging app.</string>
     <string name="Page2Message">**Indachat** delivers messages faster than\nany other application.</string>
-    <string name="Page3Message">**Indachat** is free forever. No ads.\nNo subscription fees.</string>
+    <string name="Page3Message">**Indachat** No ads.</string>
     <string name="Page4Message">**Indachat** keeps your messages safe\nfrom hacker attacks.</string>
     <string name="Page5Message">**Indachat** has no limits on the size of\nyour media and chats.</string>
     <string name="Page6Message">**Indachat** lets you access your messages\nfrom multiple devices.</string>
