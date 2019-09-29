@@ -334,7 +334,7 @@ void *ConnectionsManager::ThreadProc(void *data) {
 
 void ConnectionsManager::loadConfig() {
     initDatacenters();
-    currentDatacenterId = 1;
+    currentDatacenterId = 2;
     if (config == nullptr) {
         config = new Config(instanceNum, "tgnet.dat");
     }
@@ -1513,12 +1513,12 @@ void ConnectionsManager::initDatacenters() {
 
 
 #ifdef PATCH_BY_NEBULACHAT
-    std::string _nebulaChatServer("195.201.231.36");
+//    std::string _nebulaChatServer("195.201.231.35");
 //new server
 //    std::string _nebulaChatServer("88.99.172.114");
     //old server
 //    std::string _nebulaChatServer("185.52.0.148");
-    // std::string _nebulaChatServer("192.168.1.150");
+     std::string _nebulaChatServer("192.168.1.10");
     // std::string _nebulaChatServer("192.168.0.113");
     // std::string _nebulaChatServer("192.168.2.112");
     // std::string _nebulaChatServer("182.16.84.106");
@@ -1795,7 +1795,7 @@ void ConnectionsManager::setUserId(int32_t userId) {
 
 void ConnectionsManager::switchBackend() {
     scheduleTask([&] {
-        currentDatacenterId = 1;
+        currentDatacenterId = 2;
         testBackend = !testBackend;
         datacenters.clear();
         initDatacenters();

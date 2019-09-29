@@ -81,7 +81,7 @@ public class ConnectionsManager {
 
     private static long lastDnsRequestTime;
 
-    public final static int DEFAULT_DATACENTER_ID = Integer.MAX_VALUE;
+    public final static int DEFAULT_DATACENTER_ID = 2;
 
     private long lastPauseTime = System.currentTimeMillis();
     private boolean appPaused = true;

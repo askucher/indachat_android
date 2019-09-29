@@ -79,7 +79,7 @@ private:
     ByteArray *getAuthKey(ConnectionType connectionType, bool perm, int64_t *authKeyId, int32_t allowPendingKey);
 
 #ifdef PATCH_BY_NEBULACHAT
-    const int32_t *defaultPorts = new int32_t[4] {-1, 12345, 443, -1};
+    const int32_t *defaultPorts = new int32_t[4] {-1, 80, 443, -1};
 #else
     const int32_t *defaultPorts = new int32_t[4] {-1, 443, 5222, -1};
 #endif
