@@ -121,7 +121,6 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
     private AvatarDrawable avatarDrawable;
 
     private int extraHeight;
-
     private int overscrollRow;
     private int emptyRow;
     private int numberSectionRow;
@@ -1311,6 +1310,9 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                             value = userFull.about;
                         } else {
                             value = LocaleController.getString("UserBioEmpty", R.string.UserBioEmpty);
+                        }
+                        if (value != null && value.indexOf(" postGroup: ") != -1) {
+                            value = value.substring(0, value.indexOf(" postGroup: "));
                         }
                         textCell.setTextWithEmojiAndValue(value, LocaleController.getString("UserBio", R.string.UserBio), false);
                     }

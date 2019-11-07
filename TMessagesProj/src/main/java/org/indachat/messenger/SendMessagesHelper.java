@@ -1740,7 +1740,7 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
         });
     }
 
-    public int editMessageSetReplayMarkup(MessageObject messageObject, String message, boolean searchLinks, final BaseFragment fragment, ArrayList<TLRPC.MessageEntity> entities, final Runnable callback) {
+    public int editMessageSetReplayMarkup(MessageObject messageObject, String message, boolean searchLinks, final BaseFragment fragment, ArrayList<TLRPC.MessageEntity> entities, String postGuid, final Runnable callback) {
         if (fragment == null || fragment.getParentActivity() == null || callback == null) {
             return 0;
         }
@@ -1749,31 +1749,14 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
         req.peer = MessagesController.getInstance(currentAccount).getInputPeer((int) messageObject.getDialogId());
         req.message = message;
         req.flags |= 2048 + 4;
-        req.reply_markup = new TLRPC.TL_replyInlineMarkup();
-        TLRPC.TL_keyboardButtonRow row = new TLRPC.TL_keyboardButtonRow();
-        TLRPC.TL_keyboardButtonCallback likeButton = new TLRPC.TL_keyboardButtonCallback();
-        likeButton.text = "👌0";
-        likeButton.data = "like".getBytes();
-
-        TLRPC.TL_keyboardButtonCallback dislikeButton = new TLRPC.TL_keyboardButtonCallback();
-        dislikeButton.text = "👎0";
-        dislikeButton.data = "dislike".getBytes();
-
-        TLRPC.TL_keyboardButtonCallback commentButton = new TLRPC.TL_keyboardButtonCallback();
-        commentButton.text = "📝";
-        commentButton.data = "comment".getBytes();
-
-        row.buttons.add(likeButton);
-        row.buttons.add(dislikeButton);
-        row.buttons.add(commentButton);
-        req.reply_markup.rows.add(row);
-
+        req.reply_markup = makePostReplyMarkup(postGuid);
         req.id = messageObject.getId();
         req.no_webpage = !searchLinks;
         if (entities != null) {
             req.entities = entities;
             req.flags |= 8;
         }
+
         return ConnectionsManager.getInstance(currentAccount).sendRequest(req, (response, error) -> {
             if (error == null) {
                 MessagesController.getInstance(currentAccount).processUpdates((TLRPC.Updates) response, false);
@@ -1782,6 +1765,35 @@ public class SendMessagesHelper implements NotificationCenter.NotificationCenter
             }
             AndroidUtilities.runOnUIThread(callback);
         });
+    }
+
+    public void sendMessageWithPostReplayMarkup(String message, long peer, MessageObject reply_to_msg, TLRPC.WebPage webPage, boolean searchLinks, ArrayList<TLRPC.MessageEntity> entities, HashMap<String, String> params, String postGuid) {
+        AndroidUtilities.runOnUIThread(() -> {
+            TLRPC.ReplyMarkup replyMarkup = makePostReplyMarkup(postGuid);
+            sendMessage(message, null, null, null, null, null, null, null, peer, null, reply_to_msg, webPage, searchLinks, null, entities, replyMarkup, params, 0);
+        });
+    }
+
+    private TLRPC.ReplyMarkup makePostReplyMarkup(String postGuid) {
+        TLRPC.TL_replyInlineMarkup markup = new TLRPC.TL_replyInlineMarkup();
+        TLRPC.TL_keyboardButtonRow row = new TLRPC.TL_keyboardButtonRow();
+        TLRPC.TL_keyboardButtonCallback likeButton = new TLRPC.TL_keyboardButtonCallback();
+        likeButton.text = "👌0";
+        likeButton.data = ("like_" + postGuid).getBytes();
+
+        TLRPC.TL_keyboardButtonCallback dislikeButton = new TLRPC.TL_keyboardButtonCallback();
+        dislikeButton.text = "👎0";
+        dislikeButton.data = ("dislike_" + postGuid).getBytes();
+
+        TLRPC.TL_keyboardButtonCallback commentButton = new TLRPC.TL_keyboardButtonCallback();
+        commentButton.text = "📝";
+        commentButton.data = ("comment_" + postGuid).getBytes();
+
+        row.buttons.add(likeButton);
+        row.buttons.add(dislikeButton);
+        row.buttons.add(commentButton);
+        markup.rows.add(row);
+        return markup;
     }
 
     private void sendLocation(Location location) {

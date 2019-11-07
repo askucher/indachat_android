@@ -422,6 +422,13 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                         preferences.edit().putBoolean("channel_intro", true).commit();
                     }
                     drawerLayoutContainer.closeDrawer(false);
+                } else if (id == 5) {
+                    TLRPC.TL_userFull userFull = MessagesController.getInstance(UserConfig.selectedAccount).getUserFull(UserConfig.getInstance(UserConfig.selectedAccount).getClientUserId());
+                    if (userFull != null && !TextUtils.isEmpty(userFull.about) && userFull.about.indexOf(" postGroup: ") != -1) {
+                        String value = userFull.about.substring(userFull.about.indexOf(" postGroup: ") + " postGroup: ".length());
+                        Browser.openUrl(LaunchActivity.this, value);
+                    }
+                    drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 6) {
                     presentFragment(new ContactsActivity(null));
                     drawerLayoutContainer.closeDrawer(false);
@@ -465,6 +472,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.closeOtherAppActivities, this);
 
         currentConnectionState = ConnectionsManager.getInstance(currentAccount).getConnectionState();
+        MessagesController.getInstance(currentAccount).loadFullUser(UserConfig.getInstance(currentAccount).getCurrentUser(), 0, true);
 
         NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.needShowAlert);
         NotificationCenter.getGlobalInstance().addObserver(this, NotificationCenter.reloadInterface);
@@ -1100,7 +1108,7 @@ public class LaunchActivity extends Activity implements ActionBarLayout.ActionBa
                             if (scheme != null) {
                                 if ((scheme.equals("http") || scheme.equals("https"))) {
                                     String host = data.getHost().toLowerCase();
-                                    if (host.equals("telegram.me") || host.equals("t.me") || host.equals("telegram.dog") || host.equals("telesco.pe")) {
+                                    if (host.equals("telegram.me") || host.equals("z-ct.co") || host.equals("telegram.dog") || host.equals("telesco.pe")) {
                                         String path = data.getPath();
                                         if (path != null && path.length() > 1) {
                                             path = path.substring(1);

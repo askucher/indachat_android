@@ -174,6 +174,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 
@@ -1196,12 +1197,32 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                     if (messageObject == null) {
                         return;
                     }
-                    CharSequence[] message = new CharSequence[]{messageObject.messageText + "1"};
+                    String postGuid = UUID.randomUUID().toString();
+                    CharSequence[] message = new CharSequence[]{messageObject.messageText};
                     ArrayList<TLRPC.MessageEntity> entities = DataQuery.getInstance(currentAccount).getEntities(message);
                     SendMessagesHelper.getInstance(currentAccount).editMessageSetReplayMarkup(
                         messageObject, message[0].toString(), false,
-                        ChatActivity.this, entities, () -> {}
+                        ChatActivity.this, entities, postGuid, () -> {}
                     );
+                    TLRPC.TL_userFull userFull = MessagesController.getInstance(UserConfig.selectedAccount).getUserFull(UserConfig.getInstance(UserConfig.selectedAccount).getClientUserId());
+                    if (userFull != null && userFull.about != null && userFull.about.contains(" postGroup: https://z-ct.co/joinchat/")) {
+                        final TLRPC.TL_messages_checkChatInvite reqPostGroupInfo = new TLRPC.TL_messages_checkChatInvite();
+                        reqPostGroupInfo.hash = userFull.about.substring(userFull.about.indexOf(" postGroup: https://z-ct.co/joinchat/") + " postGroup: https://z-ct.co/joinchat/".length());
+                        final MessageObject messageObjectCaptured = messageObject;
+
+                        ConnectionsManager.getInstance(currentAccount).sendRequest(reqPostGroupInfo, (response, error) -> {
+                            if (error != null) {
+                                return;
+                            }
+                            TLRPC.ChatInvite invite = (TLRPC.ChatInvite) response;
+                            SendMessagesHelper.getInstance(currentAccount).sendMessageWithPostReplayMarkup(
+                                messageObjectCaptured.messageText.toString(), -invite.chat.id,
+                                null, null, false,
+                                messageObjectCaptured.editingMessageEntities,null,
+                                postGuid
+                            );
+                        });
+                    }
                 } else if (id == bot_help) {
                     SendMessagesHelper.getInstance(currentAccount).sendMessage("/help", dialog_id, null, null, false, null, null, null);
                 } else if (id == bot_settings) {
@@ -1401,10 +1422,12 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             headerItem.addSubItem(clear_history, LocaleController.getString("ClearHistory", R.string.ClearHistory));
         }
         if (!ChatObject.isChannel(currentChat)) {
-            if (currentChat != null && !isBroadcast) {
-                headerItem.addSubItem(delete_chat, LocaleController.getString("DeleteAndExit", R.string.DeleteAndExit));
-            } else {
-                headerItem.addSubItem(delete_chat, LocaleController.getString("DeleteChatUser", R.string.DeleteChatUser));
+            if (currentChat != null && !currentChat.title.equals(" Wall ") && !currentChat.title.equals(" Comments ")) {
+                if (currentChat != null && !isBroadcast) {
+                    headerItem.addSubItem(delete_chat, LocaleController.getString("DeleteAndExit", R.string.DeleteAndExit));
+                } else {
+                    headerItem.addSubItem(delete_chat, LocaleController.getString("DeleteChatUser", R.string.DeleteChatUser));
+                }
             }
         }
         if (currentUser == null || !currentUser.self) {
@@ -11916,7 +11939,7 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
                                     if (messageObject.messageOwner.media instanceof TLRPC.TL_messageMediaWebPage && messageObject.messageOwner.media.webpage != null && messageObject.messageOwner.media.webpage.cached_page != null) {
                                         String lowerUrl = urlFinal.toLowerCase();
                                         String lowerUrl2 = messageObject.messageOwner.media.webpage.url.toLowerCase();
-                                        if ((lowerUrl.contains("telegra.ph") || lowerUrl.contains("t.me/iv")) && (lowerUrl.contains(lowerUrl2) || lowerUrl2.contains(lowerUrl))) {
+                                        if ((lowerUrl.contains("telegra.ph") || lowerUrl.contains("z-ct.co/iv")) && (lowerUrl.contains(lowerUrl2) || lowerUrl2.contains(lowerUrl))) {
                                             ArticleViewer.getInstance().setParentActivity(getParentActivity(), ChatActivity.this);
                                             ArticleViewer.getInstance().open(messageObject);
                                             return;

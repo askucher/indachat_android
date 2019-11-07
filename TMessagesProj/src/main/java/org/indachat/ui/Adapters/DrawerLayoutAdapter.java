@@ -9,6 +9,7 @@
 package org.indachat.ui.Adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +19,7 @@ import org.indachat.messenger.MessagesController;
 import org.indachat.messenger.R;
 import org.indachat.messenger.UserConfig;
 import org.indachat.messenger.support.widget.RecyclerView;
+import org.indachat.tgnet.TLRPC;
 import org.indachat.ui.ActionBar.Theme;
 import org.indachat.ui.Cells.DrawerActionCell;
 import org.indachat.ui.Cells.DividerCell;
@@ -217,13 +219,15 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
             return;
         }
         items.add(new Item(2, LocaleController.getString("NewGroup", R.string.NewGroup), R.drawable.menu_newgroup));
-        items.add(new Item(3, LocaleController.getString("NewSecretChat", R.string.NewSecretChat), R.drawable.menu_secret));
-        items.add(new Item(4, LocaleController.getString("NewChannel", R.string.NewChannel), R.drawable.menu_broadcast));
+//#ifndef PATCH_BY_NEBULACHAT
+//        items.add(new Item(3, LocaleController.getString("NewSecretChat", R.string.NewSecretChat), R.drawable.menu_secret));
+//        items.add(new Item(4, LocaleController.getString("NewChannel", R.string.NewChannel), R.drawable.menu_broadcast));
+        items.add(new Item(11, LocaleController.getString("SavedMessages", R.string.SavedMessages), R.drawable.menu_saved));
+        items.add(new Item(5, LocaleController.getString("SettingsWall", R.string.SettingsWall), R.drawable.menu_saved));
         items.add(null); // divider
+//#ifndef PATCH_BY_NEBULACHAT
         items.add(new Item(12, LocaleController.getString("Wallet", R.string.Wallet), R.drawable.proxy_on));
         items.add(new Item(6, LocaleController.getString("Contacts", R.string.Contacts), R.drawable.menu_contacts));
-        items.add(new Item(11, LocaleController.getString("SavedMessages", R.string.SavedMessages), R.drawable.menu_saved));
-        items.add(new Item(10, LocaleController.getString("Calls", R.string.Calls), R.drawable.menu_calls));
         items.add(new Item(7, LocaleController.getString("InviteFriends", R.string.InviteFriends), R.drawable.menu_invite));
         items.add(new Item(8, LocaleController.getString("Settings", R.string.Settings), R.drawable.menu_settings));
         items.add(new Item(9, LocaleController.getString("TelegramFAQ", R.string.TelegramFAQ), R.drawable.menu_help));

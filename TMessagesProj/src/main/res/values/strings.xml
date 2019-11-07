@@ -946,6 +946,7 @@
     <string name="ResetAllNotifications">Reset All Notifications</string>
     <string name="UndoAllCustom">Undo all custom notification settings for all your contacts and groups</string>
     <string name="NotificationsAndSounds">Notifications and Sounds</string>
+    <string name="SettingsWall">Wall</string>
     <string name="CustomNotifications">Custom Notifications</string>
     <string name="ProfilePopupNotification">Popup notifications</string>
     <string name="ProfilePopupNotificationInfo">New messages from this contact will appear on your screen when you are not using Indachat.</string>

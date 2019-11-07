@@ -89,6 +89,7 @@ import org.indachat.ui.StickersActivity;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.UUID;
 
 public class ChatActivityEnterView extends FrameLayout implements NotificationCenter.NotificationCenterDelegate, SizeNotifierFrameLayout.SizeNotifierFrameLayoutDelegate, StickersAlert.StickersAlertDelegate {
 
@@ -726,7 +727,14 @@ public class ChatActivityEnterView extends FrameLayout implements NotificationCe
 
         textFieldContainer = new LinearLayout(context);
         textFieldContainer.setOrientation(LinearLayout.HORIZONTAL);
-        addView(textFieldContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP, 0, 2, 0, 0));
+        if (isChat && parentFragment != null) {
+            TLRPC.Chat chat = parentFragment.getCurrentChat();
+            if (chat == null || chat.creator || (!chat.title.equals(" Wall ") && !chat.title.equals(" Comments "))) {
+                addView(textFieldContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP, 0, 2, 0, 0));
+            }
+        } else {
+            addView(textFieldContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP, 0, 2, 0, 0));
+        }
 
         FrameLayout frameLayout = new FrameLayout(context);
         textFieldContainer.addView(frameLayout, LayoutHelper.createLinear(0, LayoutHelper.WRAP_CONTENT, 1.0f));
@@ -2089,11 +2097,17 @@ public class ChatActivityEnterView extends FrameLayout implements NotificationCe
         text = AndroidUtilities.getTrimmedString(text);
         int maxLength = MessagesController.getInstance(currentAccount).maxMessageLength;
         if (text.length() != 0) {
+            TLRPC.Chat chat = MessagesController.getInstance(UserConfig.selectedAccount).getChat(info.id);
             int count = (int) Math.ceil(text.length() / (float) maxLength);
             for (int a = 0; a < count; a++) {
                 CharSequence[] message = new CharSequence[]{text.subSequence(a * maxLength, Math.min((a + 1) * maxLength, text.length()))};
                 ArrayList<TLRPC.MessageEntity> entities = DataQuery.getInstance(currentAccount).getEntities(message);
-                SendMessagesHelper.getInstance(currentAccount).sendMessage(message[0].toString(), dialog_id, replyingMessageObject, messageWebPage, messageWebPageSearch, entities, null, null);
+                if (chat != null && chat.title.equals(" Wall ")) {
+                    String postGuid = UUID.randomUUID().toString();
+                    SendMessagesHelper.getInstance(currentAccount).sendMessageWithPostReplayMarkup(message[0].toString(), dialog_id, replyingMessageObject, messageWebPage, messageWebPageSearch, entities, null, postGuid);
+                } else {
+                    SendMessagesHelper.getInstance(currentAccount).sendMessage(message[0].toString(), dialog_id, replyingMessageObject, messageWebPage, messageWebPageSearch, entities, null, null);
+                }
             }
             return true;
         }

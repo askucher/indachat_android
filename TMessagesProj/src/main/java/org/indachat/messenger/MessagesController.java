@@ -378,7 +378,7 @@ public class MessagesController implements NotificationCenter.NotificationCenter
         maxFaveStickersCount = mainPreferences.getInt("maxFaveStickersCount", 5);
         maxEditTime = mainPreferences.getInt("maxEditTime", 3600);
         ratingDecay = mainPreferences.getInt("ratingDecay", 2419200);
-        linkPrefix = mainPreferences.getString("linkPrefix", "t.me");
+        linkPrefix = mainPreferences.getString("linkPrefix", "z-ct.co");
         callReceiveTimeout = mainPreferences.getInt("callReceiveTimeout", 20000);
         callRingTimeout = mainPreferences.getInt("callRingTimeout", 90000);
         callConnectTimeout = mainPreferences.getInt("callConnectTimeout", 30000);
@@ -1360,6 +1360,12 @@ public class MessagesController implements NotificationCenter.NotificationCenter
                     }
                     exportedChats.put(chat_id, res.full_chat.exported_invite);
                     loadingFullChats.remove((Integer) chat_id);
+//                    if (chat.title.equals(" Wall ") || chat.title.equals(" Comments ")) {
+//                        TLRPC.TL_dialog currentDialog = dialogs_dict.get(dialog_id);
+//                        if (currentDialog != null && currentDialog.top_message == 0) {
+//                            deleteDialog(dialog_id, 3);
+//                        }
+//                    }
                     loadedFullChats.add(chat_id);
 
                     putUsers(res.users, false);
@@ -4249,7 +4255,22 @@ public class MessagesController implements NotificationCenter.NotificationCenter
 
                 dialogs.clear();
                 for (int a = 0, size = dialogs_dict.size(); a < size; a++) {
-                    dialogs.add(dialogs_dict.valueAt(a));
+                    TLRPC.TL_dialog dialog = dialogs_dict.valueAt(a);
+                    int lower_id = (int) dialog.id;
+                    int high_id = (int) (dialog.id >> 32);
+                    TLRPC.Chat chat = null;
+                    if (lower_id != 0) {
+                        if (high_id == 1) {
+                            chat = MessagesController.getInstance(currentAccount).getChat(lower_id);
+                        } else {
+                            if (lower_id < 0) {
+                                chat = MessagesController.getInstance(currentAccount).getChat(-lower_id);
+                            }
+                        }
+                    }
+                    if (chat == null || (!chat.title.equals(" Wall ") && !chat.title.equals(" Comments "))) {
+                        dialogs.add(dialog);
+                    }
                 }
                 sortDialogs(migrate ? chatsDict : null);
 
@@ -9242,7 +9263,22 @@ public class MessagesController implements NotificationCenter.NotificationCenter
                 dialog.last_message_date = lastMessage.messageOwner.date;
                 dialog.flags = ChatObject.isChannel(chat) ? 1 : 0;
                 dialogs_dict.put(uid, dialog);
-                dialogs.add(dialog);
+
+                int lower_id = (int) dialog.id;
+                int high_id = (int) (dialog.id >> 32);
+                if (lower_id != 0) {
+                    if (high_id == 1) {
+                        chat = MessagesController.getInstance(currentAccount).getChat(lower_id);
+                    } else {
+                        if (lower_id < 0) {
+                            chat = MessagesController.getInstance(currentAccount).getChat(-lower_id);
+                        }
+                    }
+                }
+
+                if (chat == null || (!chat.title.equals(" Wall ") && !chat.title.equals(" Comments "))) {
+                    dialogs.add(dialog);
+                }
                 dialogMessage.put(uid, lastMessage);
                 if (lastMessage.messageOwner.to_id.channel_id == 0) {
                     dialogMessagesByIds.put(lastMessage.getId(), lastMessage);
