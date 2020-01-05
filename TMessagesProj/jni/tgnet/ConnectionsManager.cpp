@@ -1513,7 +1513,8 @@ void ConnectionsManager::initDatacenters() {
 
 
 #ifdef PATCH_BY_NEBULACHAT
-    std::string _nebulaChatServer("195.201.231.35");
+//testing server
+        std::string _nebulaChatServer("195.201.231.35");
 //new server
 //    std::string _nebulaChatServer("88.99.172.114");
     //old server

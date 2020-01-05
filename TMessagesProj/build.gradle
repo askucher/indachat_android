@@ -87,7 +87,7 @@ android {
 
     }
 
-    defaultConfig.versionCode = 1367
+    defaultConfig.versionCode = 1371
 
     sourceSets.debug {
         manifest.srcFile 'config/debug/AndroidManifest.xml'
@@ -219,7 +219,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionName "4.9.1"
 
         //obtain your own keys at https://core.telegram.org/api/obtaining_api_id

@@ -2097,7 +2097,10 @@ public class ChatActivityEnterView extends FrameLayout implements NotificationCe
         text = AndroidUtilities.getTrimmedString(text);
         int maxLength = MessagesController.getInstance(currentAccount).maxMessageLength;
         if (text.length() != 0) {
-            TLRPC.Chat chat = MessagesController.getInstance(UserConfig.selectedAccount).getChat(info.id);
+            TLRPC.Chat chat = null;
+            if (dialog_id < 0) {
+                chat = MessagesController.getInstance(currentAccount).getChat(-(int) dialog_id);
+            }
             int count = (int) Math.ceil(text.length() / (float) maxLength);
             for (int a = 0; a < count; a++) {
                 CharSequence[] message = new CharSequence[]{text.subSequence(a * maxLength, Math.min((a + 1) * maxLength, text.length()))};
